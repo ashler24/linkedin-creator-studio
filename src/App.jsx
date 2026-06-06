@@ -1297,7 +1297,7 @@ export default function App() {
         if (!element) continue;
 
         const canvas = await html2canvas(element, {
-          scale: 2,
+          scale: 1.5,
           useCORS: true,
           allowTaint: true,
           logging: false,
@@ -2302,6 +2302,20 @@ export default function App() {
                 </button>
               </div>
 
+              {/* LinkedIn Quality & Anti-Compression Tips */}
+              <div className="w-full mt-4 bg-slate-900/60 border border-slate-850 rounded-2xl p-4 flex gap-3 text-left">
+                <Info className="w-5 h-5 text-indigo-400 shrink-0 mt-0.5" />
+                <div className="space-y-2">
+                  <h4 className="text-sm font-bold text-slate-200">LinkedIn Quality & Anti-Compression Tips</h4>
+                  <p className="text-xs text-slate-400 leading-relaxed">
+                    <strong className="text-indigo-300">📄 Highly Recommended: Upload as PDF Document.</strong> Uploading your carousel as a PDF ("Document" on LinkedIn) bypasses image compression completely. It renders pages as vector paths, keeping text and code crystal clear at any zoom level on both desktop and mobile devices.
+                  </p>
+                  <p className="text-xs text-slate-400 leading-relaxed">
+                    <strong className="text-emerald-400">🖼️ Optimized PNG Images.</strong> When exporting individual slides, the app exports them at a fine-tuned <strong className="text-slate-300">1.5x scale (1620px width)</strong>. This avoids LinkedIn's aggressive compression (often triggered on images over 3–5MB) while preserving perfect clarity.
+                  </p>
+                </div>
+              </div>
+
               {/* Hidden Export Container */}
               <div 
                 style={{ 
@@ -2549,6 +2563,23 @@ export default function App() {
                             <span className="flex items-center gap-0.5 hover:text-slate-300 cursor-pointer">✉️ Send</span>
                           </div>
 
+                        </div>
+                      </div>
+
+                      {/* Image Quality & Compression Alert */}
+                      <div className="p-3 bg-amber-500/5 border border-amber-500/10 rounded-xl flex gap-2 text-left">
+                        <AlertCircle className="w-4 h-4 text-amber-500 shrink-0 mt-0.5" />
+                        <div className="space-y-1">
+                          <span className="text-[10px] font-bold text-amber-400 uppercase tracking-wide block">Anti-Compression Guard</span>
+                          <p className="text-[9px] text-slate-400 leading-relaxed">
+                            LinkedIn scales down images over <strong>4096px</strong> or <strong>5MB</strong>, which blurs fine text and code.
+                          </p>
+                          <p className="text-[9px] text-slate-400 leading-relaxed">
+                            {infographicLayout === 'carousel' 
+                              ? "To bypass this, upload multi-slide carousels as a PDF Document. Single slide PNG downloads are auto-optimized to fit safety thresholds."
+                              : "This tall infographic will render at a perfect 1200px width (2.0x scale) to ensure crystal-clear text quality while staying under LinkedIn's compression limits."
+                            }
+                          </p>
                         </div>
                       </div>
                     </div>
