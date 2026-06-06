@@ -973,7 +973,7 @@ export default function App() {
     return INFOGRAPHIC_FONTS[0];
   });
   const [infographicLayout, setInfographicLayout] = useState(() => {
-    return localStorage.getItem('hub_infographicLayout') || 'infographic';
+    return 'infographic';
   });
   const [infographicAspect, setInfographicAspect] = useState(() => {
     return localStorage.getItem('hub_infographicAspect') || 'portrait';
@@ -1290,6 +1290,59 @@ export default function App() {
       setLinkedinSlides(updated);
       setLinkedinActiveIndex(linkedinActiveIndex + 1);
     }
+  };
+
+  const handleImportTemplateToSlides = (templateId) => {
+    const template = INFOGRAPHIC_TEMPLATES[templateId];
+    if (!template) return;
+
+    // 1. Create cover slide (Title layout)
+    const coverSlide = {
+      id: `imported-cover-${Date.now()}`,
+      layout: 'title',
+      title: template.title,
+      subtitle: template.subtitle,
+      body: '',
+      code: '',
+      quoteAuthor: '',
+      bgOverride: '',
+    };
+
+    // 2. Create feature slides (Code layout)
+    const featureSlides = template.features.map((feature, fIdx) => {
+      const scenariosBody = feature.scenarios.map(sc => `• ${sc}`).join('\n');
+      return {
+        id: `imported-feature-${fIdx}-${Date.now()}`,
+        layout: 'code',
+        title: feature.title,
+        subtitle: feature.subtitle,
+        code: feature.code,
+        body: scenariosBody,
+        quoteAuthor: '',
+        bgOverride: '',
+      };
+    });
+
+    // 3. Create N+1 CTA slide
+    const ctaSlide = {
+      id: `imported-cta-${Date.now()}`,
+      layout: 'cta',
+      title: 'Thanks for Reading!',
+      body: 'If you found this helpful, click follow to see daily developer cheat sheets and tips!',
+      code: '',
+      quoteAuthor: '',
+      bgOverride: '',
+    };
+
+    // Update settings
+    if (template.footerBrand) {
+      setCompanyName(template.footerBrand);
+    }
+
+    setLinkedinSlides([coverSlide, ...featureSlides, ctaSlide]);
+    setLinkedinActiveIndex(0);
+    setActiveTab('carousel');
+    triggerToast(`Loaded "${template.name}" template into Slides Builder!`);
   };
 
   const downloadCarouselPDF = async () => {
@@ -1939,6 +1992,38 @@ export default function App() {
             {/* LEFT CONFIGURATION PANELS (5 Cols) */}
             <div className="lg:col-span-5 space-y-6 overflow-y-auto max-h-[calc(100vh-160px)] pr-2">
               
+              {/* Cheat Sheet Import Preset Panel */}
+              <div className="bg-[#121824]/85 border border-indigo-500/20 rounded-2xl p-5 space-y-3 shadow-xl">
+                <div className="flex items-center gap-2">
+                  <Sparkles className="w-5 h-5 text-indigo-400 animate-pulse" />
+                  <h3 className="text-sm font-bold uppercase tracking-wider text-slate-200">
+                    Cheat Sheet Template Importer
+                  </h3>
+                </div>
+                <p className="text-[11px] text-slate-400 leading-normal">
+                  Instantly build your entire slide carousel by loading one of our pre-designed developer cheat sheets!
+                </p>
+                <div className="flex items-center gap-2">
+                  <select
+                    onChange={(e) => {
+                      if (e.target.value) {
+                        handleImportTemplateToSlides(e.target.value);
+                        e.target.value = ""; // reset dropdown selection
+                      }
+                    }}
+                    defaultValue=""
+                    className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2.5 text-xs text-slate-200 focus:outline-none focus:border-indigo-500 cursor-pointer font-medium"
+                  >
+                    <option value="" disabled>-- Load Pre-designed Cheat Sheet --</option>
+                    {Object.entries(INFOGRAPHIC_TEMPLATES).map(([key, t]) => (
+                      <option key={key} value={key}>
+                        {t.name}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              </div>
+
               {/* Profile / Branding Section */}
               <div className="bg-slate-900/60 border border-slate-800 rounded-2xl p-5 space-y-4">
                 <h3 className="text-sm font-bold uppercase tracking-wider text-slate-400 flex items-center gap-2">
@@ -2412,90 +2497,24 @@ export default function App() {
                 </select>
               </div>
 
-              {/* Format Configuration */}
+              {/* Infographic Layout Information */}
               <div className="space-y-3">
                 <h2 className="text-[11px] font-bold uppercase tracking-wider text-slate-400 flex items-center gap-2">
-                  <Layout className="w-4 h-4 text-indigo-400" /> 1. Select Layout Structure
+                  <Layout className="w-4 h-4 text-indigo-400" /> Cheat Sheet Output Format
                 </h2>
-                <div className="grid grid-cols-2 gap-2.5">
-                  <button
-                    onClick={() => setInfographicLayout('infographic')}
-                    className={`p-3 rounded-xl border text-left transition-all flex flex-col justify-between h-20 ${
-                      infographicLayout === 'infographic' 
-                        ? 'bg-indigo-600/10 border-indigo-500 text-white' 
-                        : 'bg-slate-900/40 border-slate-850 text-slate-400 hover:bg-slate-900/80 hover:border-slate-750'
-                    }`}
-                  >
-                    <Layout className="w-4 h-4 text-indigo-400" />
-                    <span className="font-bold text-xs">Vertical Infographic</span>
-                  </button>
-
-                  <button
-                    onClick={() => setInfographicLayout('carousel')}
-                    className={`p-3 rounded-xl border text-left transition-all flex flex-col justify-between h-20 ${
-                      infographicLayout === 'carousel' 
-                        ? 'bg-indigo-600/10 border-indigo-500 text-white' 
-                        : 'bg-slate-900/40 border-slate-850 text-slate-400 hover:bg-slate-900/80 hover:border-slate-750'
-                    }`}
-                  >
-                    <FileCode className="w-4 h-4 text-pink-400" />
-                    <span className="font-bold text-xs">Slides Carousel</span>
-                  </button>
+                <div className="p-4 bg-slate-900/40 border border-slate-850 rounded-2xl space-y-3">
+                  <span className="text-xs font-bold text-slate-200 block">Continuous Vertical Poster</span>
+                  <p className="text-[11px] text-slate-400 leading-relaxed">
+                    This layout compiles all features into a single, high-density vertical cheat sheet. Ideal for comprehensive syntax guides and developer reference posters.
+                  </p>
+                  <div className="p-3 bg-indigo-500/5 border border-indigo-500/10 rounded-xl flex gap-2">
+                    <Info className="w-4 h-4 text-indigo-400 shrink-0 mt-0.5" />
+                    <span className="text-[10px] text-slate-400 leading-normal">
+                      To create a swipeable slide deck instead, use the <strong>Template Importer</strong> on the <strong>LinkedIn Slides</strong> tab.
+                    </span>
+                  </div>
                 </div>
               </div>
-
-              {/* Aspect Ratio Configurator */}
-              <div className="space-y-3">
-                <h2 className="text-[11px] font-bold uppercase tracking-wider text-slate-400 flex items-center gap-2">
-                  <Layout className="w-4 h-4 text-indigo-400" /> 2. Define Export Ratio
-                </h2>
-                
-                {infographicLayout === 'infographic' ? (
-                  <div className="p-3 bg-slate-900/40 border border-slate-850 rounded-xl">
-                    <span className="text-xs font-bold text-slate-300 block mb-1">Continuous Poster (Tall Format)</span>
-                    <p className="text-[10px] text-slate-400 leading-normal">
-                      Continuous Poster is a tall, variable-height cheat sheet. Perfect for high-density code sheets.
-                    </p>
-                  </div>
-                ) : (
-                  <div className="grid grid-cols-3 gap-2">
-                    <button
-                      onClick={() => setInfographicAspect('square')}
-                      className={`py-2 px-1.5 rounded-xl border text-center transition-all flex flex-col items-center justify-center gap-1 h-14 ${
-                        infographicAspect === 'square' 
-                          ? 'bg-indigo-600/10 border-indigo-500 text-white font-bold' 
-                          : 'bg-slate-900/40 border-slate-850 text-slate-400 hover:bg-slate-900/80 hover:border-slate-700'
-                      }`}
-                    >
-                      <span className="text-[11px]">Square (1:1)</span>
-                      <span className="text-[8px] opacity-60">1080 x 1080</span>
-                    </button>
-
-                    <button
-                      onClick={() => setInfographicAspect('portrait')}
-                      className={`py-2 px-1.5 rounded-xl border text-center transition-all flex flex-col items-center justify-center gap-1 h-14 ${
-                        infographicAspect === 'portrait' 
-                          ? 'bg-indigo-600/10 border-indigo-500 text-white font-bold' 
-                          : 'bg-slate-900/40 border-slate-850 text-slate-400 hover:bg-slate-900/80 hover:border-slate-700'
-                      }`}
-                    >
-                      <span className="text-[11px]">Portrait (4:5)</span>
-                      <span className="text-[8px] opacity-60">1080 x 1350</span>
-                    </button>
-
-                    <button
-                      onClick={() => setInfographicAspect('landscape')}
-                      className={`py-2 px-1.5 rounded-xl border text-center transition-all flex flex-col items-center justify-center gap-1 h-14 ${
-                        infographicAspect === 'landscape' 
-                          ? 'bg-indigo-600/10 border-indigo-500 text-white font-bold' 
-                          : 'bg-slate-900/40 border-slate-850 text-slate-400 hover:bg-slate-900/80 hover:border-slate-700'
-                      }`}
-                    >
-                      <span className="text-[11px]">Landscape (16:9)</span>
-                      <span className="text-[8px] opacity-60">1920 x 1080</span>
-                    </button>
-                  </div>
-                )}
 
                 {/* Suggestions and performance tip box */}
                 {(() => {
@@ -2634,7 +2653,6 @@ export default function App() {
                     </div>
                   );
                 })()}
-              </div>
 
               {/* Preset Theme Selection */}
               <div className="space-y-3">
