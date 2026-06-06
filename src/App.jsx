@@ -771,6 +771,55 @@ const getAspectRatioSuggestion = (aspect) => {
   }
 };
 
+const getSlideLayoutStyles = (aspect) => {
+  if (aspect === 'landscape') {
+    return {
+      padding: 'py-4 px-6',
+      title: 'text-base font-extrabold',
+      subtitle: 'text-[8px] tracking-[0.15em] uppercase',
+      slideNumber: 'text-lg font-black',
+      bodySpace: 'space-y-2 pt-1',
+      codeContainer: 'p-2 my-1',
+      codeText: 'text-[9.5px] leading-normal',
+      scenarioSpace: 'space-y-1 pt-0.5',
+      scenarioText: 'text-[9.5px]',
+      footerSpace: 'pt-2 mt-1 border-t border-slate-900/60',
+      coverTitle: 'text-xl font-extrabold',
+      coverSubtitle: 'text-[10px] leading-relaxed'
+    };
+  } else if (aspect === 'square') {
+    return {
+      padding: 'py-6 px-6',
+      title: 'text-lg font-extrabold',
+      subtitle: 'text-[9px] tracking-[0.18em] uppercase',
+      slideNumber: 'text-xl font-black',
+      bodySpace: 'space-y-3 pt-2',
+      codeContainer: 'p-2.5 my-1.5',
+      codeText: 'text-[10.5px] leading-relaxed',
+      scenarioSpace: 'space-y-1.5 pt-0.5',
+      scenarioText: 'text-[10.5px]',
+      footerSpace: 'pt-3 mt-1.5 border-t border-slate-900/80',
+      coverTitle: 'text-2xl font-extrabold',
+      coverSubtitle: 'text-xs leading-relaxed'
+    };
+  } else { // portrait
+    return {
+      padding: 'py-10 px-8',
+      title: 'text-xl font-extrabold',
+      subtitle: 'text-[9px] tracking-[0.2em] uppercase',
+      slideNumber: 'text-2xl font-black',
+      bodySpace: 'space-y-4 pt-3',
+      codeContainer: 'p-3.5 my-2',
+      codeText: 'text-xs leading-relaxed',
+      scenarioSpace: 'space-y-2 pt-1',
+      scenarioText: 'text-xs',
+      footerSpace: 'pt-4 mt-2 border-t border-slate-900',
+      coverTitle: 'text-3xl font-extrabold',
+      coverSubtitle: 'text-xs leading-relaxed'
+    };
+  }
+};
+
 
 export default function App() {
   const [activeTab, setActiveTab] = useState(() => {
@@ -2986,106 +3035,109 @@ export default function App() {
                   )}
 
                   {/* Slide Carousel mode */}
-                  {infographicLayout === 'carousel' && (
-                    <div 
-                      id={`slide-preview-${infographicActiveSlide}`}
-                      className={`py-10 px-8 relative flex flex-col justify-between rounded-2xl shadow-2xl transition-all duration-300 bg-gradient-to-br ${infographicTheme.gradient} ${infographicFont.class}`}
-                      style={{
-                        width: infographicAspect === 'square' ? '540px' : infographicAspect === 'landscape' ? '640px' : '540px',
-                        height: infographicAspect === 'square' ? '540px' : infographicAspect === 'landscape' ? '360px' : '675px',
-                      }}
-                    >
+                  {infographicLayout === 'carousel' && (() => {
+                    const layoutStyles = getSlideLayoutStyles(infographicAspect);
+                    return (
                       <div 
-                        className="absolute top-1/4 left-1/3 w-64 h-64 rounded-full blur-[130px] opacity-[0.12] pointer-events-none"
-                        style={{ backgroundColor: infographicCustomAccent }}
-                      />
+                        id={`slide-preview-${infographicActiveSlide}`}
+                        className={`${layoutStyles.padding} relative flex flex-col justify-between rounded-2xl shadow-2xl transition-all duration-300 bg-gradient-to-br ${infographicTheme.gradient} ${infographicFont.class}`}
+                        style={{
+                          width: infographicAspect === 'square' ? '540px' : infographicAspect === 'landscape' ? '640px' : '540px',
+                          height: infographicAspect === 'square' ? '540px' : infographicAspect === 'landscape' ? '360px' : '675px',
+                        }}
+                      >
+                        <div 
+                          className="absolute top-1/4 left-1/3 w-64 h-64 rounded-full blur-[130px] opacity-[0.12] pointer-events-none"
+                          style={{ backgroundColor: infographicCustomAccent }}
+                        />
 
-                      {/* Slides type index cover */}
-                      {infographicActiveSlide === 0 && (
-                        <div className="flex-1 flex flex-col justify-between h-full relative">
-                          <div className="flex items-center justify-between">
-                            <div className="flex items-center gap-2">
-                              <span className="w-2 h-2 rounded-full" style={{ backgroundColor: infographicCustomAccent }} />
-                              <span className="text-[10px] tracking-[0.2em] font-extrabold text-slate-400 uppercase">{infographicCategory}</span>
-                            </div>
-                            <span className="text-[10px] font-mono text-slate-500">1 of {activeInfographicFeatures.length + 1}</span>
-                          </div>
-
-                          <div className="my-auto space-y-4">
-                            <h2 className="text-3xl font-extrabold text-white leading-tight">
-                              {infographicTitle}
-                            </h2>
-                            <p className="text-xs text-slate-400 leading-relaxed max-w-sm">
-                              {infographicSubtitle}
-                            </p>
-                          </div>
-
-                          <div className="border-t border-slate-900 pt-4 flex items-center justify-between text-xs">
-                            <span className="text-slate-400 font-semibold flex items-center gap-1">Swipe to start</span>
-                            <span className="font-extrabold tracking-wider animate-pulse" style={{ color: infographicCustomAccent }}>NEXT SLIDE →</span>
-                          </div>
-                        </div>
-                      )}
-
-                      {/* Individual Slide detail pages */}
-                      {infographicActiveSlide > 0 && infographicActiveSlide <= activeInfographicFeatures.length && (() => {
-                        const feature = activeInfographicFeatures[infographicActiveSlide - 1];
-                        if (!feature) return null;
-                        const originalIdx = infographicFeatures.findIndex(f => f.id === feature.id);
-                        return (
+                        {/* Slides type index cover */}
+                        {infographicActiveSlide === 0 && (
                           <div className="flex-1 flex flex-col justify-between h-full relative">
-                            <button 
-                              onClick={() => infographicStartEditing(originalIdx)}
-                              className="edit-overlay-btn absolute top-0 right-12 text-[10px] py-1 px-2 bg-slate-900 border border-slate-800 hover:border-slate-700 rounded text-slate-400 hover:text-white"
-                            >
-                              Edit Text
-                            </button>
-
                             <div className="flex items-center justify-between">
-                              <span className="text-[9px] font-extrabold tracking-[0.2em] uppercase" style={{ color: infographicCustomAccent }}>
-                                {feature.subtitle}
-                              </span>
-                              <span className="text-[10px] font-mono text-slate-500">{infographicActiveSlide + 1} of {activeInfographicFeatures.length + 1}</span>
+                              <div className="flex items-center gap-2">
+                                <span className="w-2 h-2 rounded-full" style={{ backgroundColor: infographicCustomAccent }} />
+                                <span className="text-[10px] tracking-[0.2em] font-extrabold text-slate-400 uppercase">{infographicCategory}</span>
+                              </div>
+                              <span className="text-[10px] font-mono text-slate-500">1 of {activeInfographicFeatures.length + 1}</span>
                             </div>
 
-                            <div className="my-auto space-y-4 pt-3">
-                              <div className="flex items-center justify-between">
-                                <h3 className="text-xl font-extrabold text-white tracking-tight">{feature.title}</h3>
-                                <span className="text-2xl font-black opacity-35" style={{ color: infographicCustomAccent }}>0{infographicActiveSlide}</span>
-                              </div>
-
-                              {/* Slide code syntax block */}
-                              <div className="rounded-lg overflow-hidden bg-slate-950/95 border border-slate-850/80 p-3.5">
-                                <pre className="text-xs font-mono text-slate-300 overflow-x-auto whitespace-pre leading-relaxed">
-                                  {feature.code}
-                                </pre>
-                              </div>
-
-                              {/* Targeted production use case list */}
-                              <div className="space-y-2 pt-1">
-                                <h4 className="text-[9px] font-bold uppercase tracking-widest text-slate-500">Key Scenarios</h4>
-                                <ul className="space-y-1">
-                                  {feature.scenarios.map((scenario, sIdx) => (
-                                    <li key={sIdx} className="flex items-start gap-2 text-xs text-slate-400">
-                                      <span className="text-xs font-mono font-bold" style={{ color: infographicCustomAccent }}>•</span>
-                                      <span className="font-sans">{scenario}</span>
-                                    </li>
-                                  ))}
-                                </ul>
-                              </div>
+                            <div className="my-auto space-y-3">
+                              <h2 className={`${layoutStyles.coverTitle} text-white leading-tight`}>
+                                {infographicTitle}
+                              </h2>
+                              <p className={`${layoutStyles.coverSubtitle} text-slate-400 max-w-sm`}>
+                                {infographicSubtitle}
+                              </p>
                             </div>
 
-                            <div className="border-t border-slate-900 pt-4 flex items-center justify-between text-[10px] text-slate-500">
-                              <span>{infographicFooterBrand}</span>
-                              <span className="font-bold uppercase tracking-wider" style={{ color: infographicCustomAccent }}>
-                                {infographicActiveSlide === activeInfographicFeatures.length ? 'FINISH' : 'SWIPE NEXT →'}
-                              </span>
+                            <div className={`flex items-center justify-between text-xs ${layoutStyles.footerSpace}`}>
+                              <span className="text-slate-400 font-semibold flex items-center gap-1">Swipe to start</span>
+                              <span className="font-extrabold tracking-wider animate-pulse" style={{ color: infographicCustomAccent }}>NEXT SLIDE →</span>
                             </div>
                           </div>
-                        );
-                      })()}
-                    </div>
-                  )}
+                        )}
+
+                        {/* Individual Slide detail pages */}
+                        {infographicActiveSlide > 0 && infographicActiveSlide <= activeInfographicFeatures.length && (() => {
+                          const feature = activeInfographicFeatures[infographicActiveSlide - 1];
+                          if (!feature) return null;
+                          const originalIdx = infographicFeatures.findIndex(f => f.id === feature.id);
+                          return (
+                            <div className="flex-1 flex flex-col justify-between h-full relative">
+                              <button 
+                                onClick={() => infographicStartEditing(originalIdx)}
+                                className="edit-overlay-btn absolute top-0 right-12 text-[10px] py-1 px-2 bg-slate-900 border border-slate-800 hover:border-slate-750 rounded text-slate-400 hover:text-white"
+                              >
+                                Edit Text
+                              </button>
+
+                              <div className="flex items-center justify-between">
+                                <span className={`${layoutStyles.subtitle}`} style={{ color: infographicCustomAccent }}>
+                                  {feature.subtitle}
+                                </span>
+                                <span className="text-[10px] font-mono text-slate-500">{infographicActiveSlide + 1} of {activeInfographicFeatures.length + 1}</span>
+                              </div>
+
+                              <div className={`my-auto ${layoutStyles.bodySpace}`}>
+                                <div className="flex items-center justify-between">
+                                  <h3 className={`${layoutStyles.title} text-white tracking-tight`}>{feature.title}</h3>
+                                  <span className={`${layoutStyles.slideNumber} opacity-35`} style={{ color: infographicCustomAccent }}>0{infographicActiveSlide}</span>
+                                </div>
+
+                                {/* Slide code syntax block */}
+                                <div className={`rounded-lg overflow-hidden bg-slate-950/95 border border-slate-850/80 ${layoutStyles.codeContainer}`}>
+                                  <pre className={`${layoutStyles.codeText} font-mono text-slate-300 overflow-x-auto whitespace-pre leading-relaxed`}>
+                                    {feature.code}
+                                  </pre>
+                                </div>
+
+                                {/* Targeted production use case list */}
+                                <div className={`${layoutStyles.scenarioSpace}`}>
+                                  <h4 className="text-[9px] font-bold uppercase tracking-widest text-slate-500">Key Scenarios</h4>
+                                  <ul className="space-y-1">
+                                    {feature.scenarios.map((scenario, sIdx) => (
+                                      <li key={sIdx} className={`flex items-start gap-2 ${layoutStyles.scenarioText} text-slate-400`}>
+                                        <span className="text-xs font-mono font-bold" style={{ color: infographicCustomAccent }}>•</span>
+                                        <span className="font-sans">{scenario}</span>
+                                      </li>
+                                    ))}
+                                  </ul>
+                                </div>
+                              </div>
+
+                              <div className={`flex items-center justify-between text-[10px] text-slate-500 ${layoutStyles.footerSpace}`}>
+                                <span>{infographicFooterBrand}</span>
+                                <span className="font-bold uppercase tracking-wider" style={{ color: infographicCustomAccent }}>
+                                  {infographicActiveSlide === activeInfographicFeatures.length ? 'FINISH' : 'SWIPE NEXT →'}
+                                </span>
+                              </div>
+                            </div>
+                          );
+                        })()}
+                      </div>
+                    );
+                  })()}
                 </div>
               </div>
 
@@ -3100,95 +3152,98 @@ export default function App() {
                     zIndex: -9999 
                   }}
                 >
-                  {Array.from({ length: activeInfographicFeatures.length + 1 }).map((_, slideIdx) => (
-                    <div 
-                      key={slideIdx}
-                      id={`infographic-slide-export-${slideIdx}`}
-                      className={`py-10 px-8 relative flex flex-col justify-between rounded-2xl shadow-2xl bg-gradient-to-br ${infographicTheme.gradient} ${infographicFont.class}`}
-                      style={{
-                        width: infographicAspect === 'square' ? '540px' : infographicAspect === 'landscape' ? '640px' : '540px',
-                        height: infographicAspect === 'square' ? '540px' : infographicAspect === 'landscape' ? '360px' : '675px',
-                      }}
-                    >
+                  {Array.from({ length: activeInfographicFeatures.length + 1 }).map((_, slideIdx) => {
+                    const layoutStyles = getSlideLayoutStyles(infographicAspect);
+                    return (
                       <div 
-                        className="absolute top-1/4 left-1/3 w-64 h-64 rounded-full blur-[130px] opacity-[0.12] pointer-events-none"
-                        style={{ backgroundColor: infographicCustomAccent }}
-                      />
+                        key={slideIdx}
+                        id={`infographic-slide-export-${slideIdx}`}
+                        className={`${layoutStyles.padding} relative flex flex-col justify-between rounded-2xl shadow-2xl bg-gradient-to-br ${infographicTheme.gradient} ${infographicFont.class}`}
+                        style={{
+                          width: infographicAspect === 'square' ? '540px' : infographicAspect === 'landscape' ? '640px' : '540px',
+                          height: infographicAspect === 'square' ? '540px' : infographicAspect === 'landscape' ? '360px' : '675px',
+                        }}
+                      >
+                        <div 
+                          className="absolute top-1/4 left-1/3 w-64 h-64 rounded-full blur-[130px] opacity-[0.12] pointer-events-none"
+                          style={{ backgroundColor: infographicCustomAccent }}
+                        />
 
-                      {slideIdx === 0 && (
-                        <div className="flex-1 flex flex-col justify-between h-full relative">
-                          <div className="flex items-center justify-between">
-                            <div className="flex items-center gap-2">
-                              <span className="w-2 h-2 rounded-full" style={{ backgroundColor: infographicCustomAccent }} />
-                              <span className="text-[10px] tracking-[0.2em] font-extrabold text-slate-400 uppercase">{infographicCategory}</span>
-                            </div>
-                            <span className="text-[10px] font-mono text-slate-500">1 of {activeInfographicFeatures.length + 1}</span>
-                          </div>
-
-                          <div className="my-auto space-y-4">
-                            <h2 className="text-3xl font-extrabold text-white leading-tight">
-                              {infographicTitle}
-                            </h2>
-                            <p className="text-xs text-slate-400 leading-relaxed max-w-sm">
-                              {infographicSubtitle}
-                            </p>
-                          </div>
-
-                          <div className="border-t border-slate-900 pt-4 flex items-center justify-between text-xs">
-                            <span className="text-slate-400 font-semibold flex items-center gap-1">Swipe to start</span>
-                            <span className="font-extrabold tracking-wider" style={{ color: infographicCustomAccent }}>NEXT SLIDE →</span>
-                          </div>
-                        </div>
-                      )}
-
-                      {slideIdx > 0 && (() => {
-                        const feature = activeInfographicFeatures[slideIdx - 1];
-                        if (!feature) return null;
-                        return (
+                        {slideIdx === 0 && (
                           <div className="flex-1 flex flex-col justify-between h-full relative">
                             <div className="flex items-center justify-between">
-                              <span className="text-[9px] font-extrabold tracking-[0.2em] uppercase" style={{ color: infographicCustomAccent }}>
-                                {feature.subtitle}
-                              </span>
-                              <span className="text-[10px] font-mono text-slate-500">{slideIdx + 1} of {activeInfographicFeatures.length + 1}</span>
+                              <div className="flex items-center gap-2">
+                                <span className="w-2 h-2 rounded-full" style={{ backgroundColor: infographicCustomAccent }} />
+                                <span className="text-[10px] tracking-[0.2em] font-extrabold text-slate-400 uppercase">{infographicCategory}</span>
+                              </div>
+                              <span className="text-[10px] font-mono text-slate-500">1 of {activeInfographicFeatures.length + 1}</span>
                             </div>
 
-                            <div className="my-auto space-y-4 pt-3">
-                              <div className="flex items-center justify-between">
-                                <h3 className="text-xl font-extrabold text-white tracking-tight">{feature.title}</h3>
-                                <span className="text-2xl font-black opacity-35" style={{ color: infographicCustomAccent }}>0{slideIdx}</span>
-                              </div>
-
-                              <div className="rounded-lg overflow-hidden bg-slate-950/95 border border-slate-850/80 p-3.5">
-                                <pre className="text-xs font-mono text-slate-300 overflow-x-auto whitespace-pre leading-relaxed">
-                                  {feature.code}
-                                </pre>
-                              </div>
-
-                              <div className="space-y-2 pt-1">
-                                <h4 className="text-[9px] font-bold uppercase tracking-widest text-slate-500">Key Scenarios</h4>
-                                <ul className="space-y-1">
-                                  {feature.scenarios.map((scenario, sIdx) => (
-                                    <li key={sIdx} className="flex items-start gap-2 text-xs text-slate-400 font-sans">
-                                      <span className="text-xs font-mono font-bold" style={{ color: infographicCustomAccent }}>•</span>
-                                      <span className="font-sans">{scenario}</span>
-                                    </li>
-                                  ))}
-                                </ul>
-                              </div>
+                            <div className="my-auto space-y-3">
+                              <h2 className={`${layoutStyles.coverTitle} text-white leading-tight`}>
+                                {infographicTitle}
+                              </h2>
+                              <p className={`${layoutStyles.coverSubtitle} text-slate-400 max-w-sm`}>
+                                {infographicSubtitle}
+                              </p>
                             </div>
 
-                            <div className="border-t border-slate-900 pt-4 flex items-center justify-between text-[10px] text-slate-500">
-                              <span>{infographicFooterBrand}</span>
-                              <span className="font-bold uppercase tracking-wider" style={{ color: infographicCustomAccent }}>
-                                {slideIdx === activeInfographicFeatures.length ? 'FINISH' : 'SWIPE NEXT →'}
-                              </span>
+                            <div className={`flex items-center justify-between text-xs ${layoutStyles.footerSpace}`}>
+                              <span className="text-slate-400 font-semibold flex items-center gap-1">Swipe to start</span>
+                              <span className="font-extrabold tracking-wider" style={{ color: infographicCustomAccent }}>NEXT SLIDE →</span>
                             </div>
                           </div>
-                        );
-                      })()}
-                    </div>
-                  ))}
+                        )}
+
+                        {slideIdx > 0 && (() => {
+                          const feature = activeInfographicFeatures[slideIdx - 1];
+                          if (!feature) return null;
+                          return (
+                            <div className="flex-1 flex flex-col justify-between h-full relative">
+                              <div className="flex items-center justify-between">
+                                <span className={`${layoutStyles.subtitle}`} style={{ color: infographicCustomAccent }}>
+                                  {feature.subtitle}
+                                </span>
+                                <span className="text-[10px] font-mono text-slate-500">{slideIdx + 1} of {activeInfographicFeatures.length + 1}</span>
+                              </div>
+
+                              <div className={`my-auto ${layoutStyles.bodySpace}`}>
+                                <div className="flex items-center justify-between">
+                                  <h3 className={`${layoutStyles.title} text-white tracking-tight`}>{feature.title}</h3>
+                                  <span className={`${layoutStyles.slideNumber} opacity-35`} style={{ color: infographicCustomAccent }}>0{slideIdx}</span>
+                                </div>
+
+                                <div className={`rounded-lg overflow-hidden bg-slate-950/95 border border-slate-850/80 ${layoutStyles.codeContainer}`}>
+                                  <pre className={`${layoutStyles.codeText} font-mono text-slate-300 overflow-x-auto whitespace-pre leading-relaxed`}>
+                                    {feature.code}
+                                  </pre>
+                                </div>
+
+                                <div className={`${layoutStyles.scenarioSpace}`}>
+                                  <h4 className="text-[9px] font-bold uppercase tracking-widest text-slate-500">Key Scenarios</h4>
+                                  <ul className="space-y-1">
+                                    {feature.scenarios.map((scenario, sIdx) => (
+                                      <li key={sIdx} className={`flex items-start gap-2 ${layoutStyles.scenarioText} text-slate-400 font-sans`}>
+                                        <span className="text-xs font-mono font-bold" style={{ color: infographicCustomAccent }}>•</span>
+                                        <span className="font-sans">{scenario}</span>
+                                      </li>
+                                    ))}
+                                  </ul>
+                                </div>
+                              </div>
+
+                              <div className={`flex items-center justify-between text-[10px] text-slate-500 ${layoutStyles.footerSpace}`}>
+                                <span>{infographicFooterBrand}</span>
+                                <span className="font-bold uppercase tracking-wider" style={{ color: infographicCustomAccent }}>
+                                  {slideIdx === activeInfographicFeatures.length ? 'FINISH' : 'SWIPE NEXT →'}
+                                </span>
+                              </div>
+                            </div>
+                          );
+                        })()}
+                      </div>
+                    );
+                  })}
                 </div>
               )}
             </div>
