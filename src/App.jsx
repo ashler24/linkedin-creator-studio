@@ -1792,11 +1792,11 @@ export default function App() {
                 {profileName.slice(0, 2).toUpperCase()}
               </div>
             )}
-            <div className="text-left">
-              <h4 className={`text-lg font-bold leading-tight ${textStyle}`}>
+            <div className="text-left flex flex-col justify-center">
+              <h4 className={`text-lg font-bold leading-normal pb-0.5 ${textStyle}`}>
                 {profileName || 'Your Name'}
               </h4>
-              <p className={`text-sm opacity-60 leading-tight truncate max-w-[400px] ${textStyle}`}>
+              <p className={`text-sm opacity-60 leading-normal pb-1 truncate max-w-[400px] ${textStyle}`}>
                 {profileHeadline || 'Your Headline'}
               </p>
             </div>
