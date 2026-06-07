@@ -1,0 +1,210 @@
+{
+  "java17": {
+    "name": "Java 17 LTS Features",
+    "title": "JAVA 17: MASTERING KEY FEATURES",
+    "subtitle": "BOOSTING CODE PRODUCTIVITY & SECURING RUNTIME ARCHITECTURE",
+    "category": "Standard LTS Architecture Guide",
+    "footerBrand": "Java Engineering Network",
+    "themeId": "obsidian",
+    "features": [
+      {
+        "id": "sealed",
+        "num": 1,
+        "title": "Sealed Classes",
+        "subtitle": "CONTROL INHERITANCE HIERARCHIES",
+        "code": "// Restrict inheritance to specific types\npublic sealed class Shape permits Circle, Square {\n    // Core shared shape properties\n}\n\npublic final class Circle extends Shape {}\npublic final class Square extends Shape {}",
+        "scenarios": [
+          "Model exact business domain hierarchies securely",
+          "Prevent third-party extension of libraries",
+          "Enable exhaustive compiler pattern checking"
+        ]
+      },
+      {
+        "id": "records",
+        "num": 2,
+        "title": "Records (Data Carriers)",
+        "subtitle": "ELIMINATE BOILERPLATE DATA CLASSES",
+        "code": "// Constructor, getters, equals, hashcode, toString in ONE line!\npublic record User(String name, int age) {\n    // Compact constructor validator\n    public User {\n        if (age < 0) throw new IllegalArgumentException();\n    }\n}",
+        "scenarios": [
+          "Immutable Data Transfer Objects (DTOs)",
+          "Map raw database query outputs directly",
+          "Cleaner key containers for HashMaps"
+        ]
+      },
+      {
+        "id": "switch",
+        "num": 3,
+        "title": "Pattern Matching for switch",
+        "subtitle": "REDUCE TYPE-CASTING VERBOSITY",
+        "code": "// Cleaner type queries and nested object resolution\nstatic String formatValue(Object obj) {\n    return switch (obj) {\n        case Integer i -> String.format(\"Integer value: %d\", i);\n        case String s  -> String.format(\"String value of len: %d\", s.length());\n        case null      -> \"Value is null!\";\n        default        -> obj.toString();\n    };\n}",
+        "scenarios": [
+          "Replace complex and repetitive nested if-else structures",
+          "Elegant, safe null handling at the pattern matching layer",
+          "High-level event/state processing architectures"
+        ]
+      },
+      {
+        "id": "textblocks",
+        "num": 4,
+        "title": "Text Blocks",
+        "subtitle": "BEAUTIFUL MULTI-LINE STRINGS",
+        "code": "// No more backslashes or clumsy concatenation arrays\nString jsonPayload = \"\"\"\n    {\n        \"status\": \"success\",\n        \"data\": {\n            \"version\": \"17.0.2\",\n            \"environment\": \"Production\"\n        }\n    }\n    \"\"\";",
+        "scenarios": [
+          "Clean embedded database strings (JSON, XML, HTML, SQL)",
+          "Highly readable mock payloads for integration tests",
+          "Templates without bulky configuration dependencies"
+        ]
+      },
+      {
+        "id": "prngs",
+        "num": 5,
+        "title": "Enhanced PRNGs",
+        "subtitle": "MODERN PSEUDO-RANDOM GENERATION",
+        "code": "// Switch and configure random generators easily\nRandomGenerator generator = RandomGeneratorFactory\n    .of(\"L128X256MixRandom\")\n    .create();\n\ndouble sampleValue = generator.nextDouble();",
+        "scenarios": [
+          "High-performance statistical modeling simulations",
+          "Thread-safe random pipelines across stream elements",
+          "Interchangeable random algorithms without changing clients"
+        ]
+      }
+    ]
+  },
+  "react19": {
+    "name": "React 19 & Frontend",
+    "title": "REACT 19: MODERN FRONTLINE PATTERNS",
+    "subtitle": "ASYNC MUTATIONS, ACTIONS API, AND RENDER OPTIMIZATIONS",
+    "category": "Frontend Engineering Cheat Sheet",
+    "footerBrand": "React Dev Community",
+    "themeId": "nord",
+    "features": [
+      {
+        "id": "use",
+        "num": 1,
+        "title": "The \"use\" Hook API",
+        "subtitle": "UNIFIED ASYNC RESOURCE ACCESS",
+        "code": "// Fetch promise results directly in render lifecycle\nconst data = use(fetchDataPromise);\n\n// Conditional context consumption\nif (isLoggedIn) {\n  const profile = use(ProfileContext);\n}",
+        "scenarios": [
+          "Eliminate redundant useEffect declarations for fetch operations",
+          "Access React Context inside loops or conditional blocks",
+          "Clean suspense integrations for fallback load states"
+        ]
+      },
+      {
+        "id": "actions",
+        "num": 2,
+        "title": "React Actions & Forms",
+        "subtitle": "NATIVE FORM ASYNC HANDLING",
+        "code": "// Automatic pending state and submission tracking\n<form action={async (formData) => {\n  const response = await signupUser(formData);\n  if (response.error) {\n    showErrorNotification(response.error);\n  }\n}}>\n  <input name=\"username\" type=\"text\" />\n</form>",
+        "scenarios": [
+          "Manage pending indicator state automatically via useTransition",
+          "Eliminate manual event.preventDefault() Form handles",
+          "Natively bound reset hooks for inputs on success"
+        ]
+      },
+      {
+        "id": "compiler",
+        "num": 3,
+        "title": "React Compiler Engine",
+        "subtitle": "ELIMINATE MANUAL MEMOIZATION",
+        "code": "// React Compiler automatically memoizes components!\n// You no longer need to write:\n// - useMemo(() => computeValue(a), [a])\n// - useCallback(() => handleAction(), [])\nconst SortedList = ({ items }) => {\n  return items.map(item => <Row item={item} />);\n};",
+        "scenarios": [
+          "Optimize render cycles automatically across subtrees",
+          "Clean component definitions without dependency arrays",
+          "Avoid bugs caused by missing dependency references"
+        ]
+      }
+    ]
+  },
+  "docker": {
+    "name": "Docker & DevOps Commands",
+    "title": "DOCKER SYSTEM: CONTAINER ENGINE",
+    "subtitle": "ESSENTIAL DESKTOP & DAEMON CLIENT OPERATIONS REFERENCE",
+    "category": "DevOps & Infrastructure Cheat Sheet",
+    "footerBrand": "DevOps OpsHub",
+    "themeId": "cyberpunk",
+    "features": [
+      {
+        "id": "build-run",
+        "num": 1,
+        "title": "Build & Instantiate",
+        "subtitle": "IMAGE COMPILATION & PORT ROUTING",
+        "code": "# Build local directory Dockerfile with version tag\ndocker build -t microservice:v1.0 .\n\n# Spin up daemon container with mapped hosts ports\ndocker run -d -p 8080:80 --name backend microservice:v1.0",
+        "scenarios": [
+          "Package applications in standard portable image schemas",
+          "Expose isolated container servers to host host interfaces",
+          "Run containers in background detached daemon modes"
+        ]
+      },
+      {
+        "id": "compose",
+        "num": 2,
+        "title": "Docker Compose Stacks",
+        "subtitle": "MULTI-CONTAINER ORCHESTRATION",
+        "code": "# Start multi-container stack from YAML file\ndocker-compose up -d --build\n\n# Stop the stack and prune network interfaces\ndocker-compose down -v",
+        "scenarios": [
+          "Spin up full local env stacks (web, database, cache) together",
+          "Declare dependency ordering and environment configurations",
+          "Clean environment tear-downs including persistent volumes"
+        ]
+      },
+      {
+        "id": "cleanup",
+        "num": 3,
+        "title": "Pruning & Space Cleanup",
+        "subtitle": "PURGE DEFUNCT ASSETS & STORAGE",
+        "code": "# Clear all stopped containers, caches, and unused volumes\ndocker system prune -a --volumes\n\n# Clear dangling volumes only\ndocker volume prune",
+        "scenarios": [
+          "Free workstation storage disk spaces instantly",
+          "Clean broken image builds and routing states",
+          "Reset environment parameters to zero state"
+        ]
+      }
+    ]
+  },
+  "git": {
+    "name": "Git Workflows & Tips",
+    "title": "GIT WORKFLOWS: MASTERING SOURCE CONTROL",
+    "subtitle": "ADVANCED BRANCHING, CHERRY-PICKS, AND CONFLICT RESOLUTIONS",
+    "category": "Source Control & Collaboration Guide",
+    "footerBrand": "Git Dev Ops",
+    "themeId": "nord",
+    "features": [
+      {
+        "id": "branching",
+        "num": 1,
+        "title": "Feature Branching Workflow",
+        "subtitle": "ISOLATE DEVELOPMENT FROM MAINLINE",
+        "code": "# Create and switch to new branch\ngit checkout -b feature/user-auth\n\n# Push feature branch to remote origin and track it\ngit push -u origin feature/user-auth",
+        "scenarios": [
+          "Develop application features in complete isolation",
+          "Avoid breaking the stable main production branch",
+          "Enable peer code reviews via Pull Requests"
+        ]
+      },
+      {
+        "id": "cherrypick",
+        "num": 2,
+        "title": "Cherry-picking Commits",
+        "subtitle": "APPLY SPECIFIC COMMITS ACROSS BRANCHES",
+        "code": "# Apply commit hash onto your current branch\ngit cherry-pick 7a8f9c2\n\n# Abort cherry-pick if conflicts occur and you want to rollback\ngit cherry-pick --abort",
+        "scenarios": [
+          "Port critical hotfixes from dev back to production branch",
+          "Retrieve specific code changes without full merge operations",
+          "Keep release branches clean of unnecessary commit noise"
+        ]
+      },
+      {
+        "id": "conflicts",
+        "num": 3,
+        "title": "Merge Conflict Resolution",
+        "subtitle": "RESOLVE CODE INTEGRATION DISCREPANCIES",
+        "code": "# Pull remote updates and automatically rebase local work\ngit pull --rebase origin main\n\n# Once conflicts are manually fixed, continue the rebase\ngit add .\ngit rebase --continue",
+        "scenarios": [
+          "Sync local branch commits cleanly with upstream codebases",
+          "Keep a flat, readable, linear commit history tree",
+          "Safely handle overlapping team edits"
+        ]
+      }
+    ]
+  }
+}

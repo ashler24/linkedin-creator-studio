@@ -7,6 +7,7 @@ import 'prismjs/components/prism-python';
 import 'prismjs/components/prism-bash';
 import 'prismjs/components/prism-sql';
 import 'prismjs/themes/prism-tomorrow.css';
+import defaultTemplates from './templates.json';
 import {
   Sparkles,
   Download,
@@ -448,296 +449,6 @@ const INFOGRAPHIC_FONTS = [
   { id: 'serif', name: 'Georgia Serif', class: 'font-serif' }
 ];
 
-// --- Configurable Infographic Cheat Sheet Presets ---
-const INFOGRAPHIC_TEMPLATES = {
-  java17: {
-    name: 'Java 17 LTS Features',
-    title: 'JAVA 17: MASTERING KEY FEATURES',
-    subtitle: 'BOOSTING CODE PRODUCTIVITY & SECURING RUNTIME ARCHITECTURE',
-    category: 'Standard LTS Architecture Guide',
-    footerBrand: 'Java Engineering Network',
-    themeId: 'obsidian',
-    features: [
-      {
-        id: 'sealed',
-        num: 1,
-        title: 'Sealed Classes',
-        subtitle: 'CONTROL INHERITANCE HIERARCHIES',
-        code: `// Restrict inheritance to specific types
-public sealed class Shape permits Circle, Square {
-    // Core shared shape properties
-}
-
-public final class Circle extends Shape {}
-public final class Square extends Shape {}`,
-        scenarios: [
-          'Model exact business domain hierarchies securely',
-          'Prevent third-party extension of libraries',
-          'Enable exhaustive compiler pattern checking'
-        ]
-      },
-      {
-        id: 'records',
-        num: 2,
-        title: 'Records (Data Carriers)',
-        subtitle: 'ELIMINATE BOILERPLATE DATA CLASSES',
-        code: `// Constructor, getters, equals, hashcode, toString in ONE line!
-public record User(String name, int age) {
-    // Compact constructor validator
-    public User {
-        if (age < 0) throw new IllegalArgumentException();
-    }
-}`,
-        scenarios: [
-          'Immutable Data Transfer Objects (DTOs)',
-          'Map raw database query outputs directly',
-          'Cleaner key containers for HashMaps'
-        ]
-      },
-      {
-        id: 'switch',
-        num: 3,
-        title: 'Pattern Matching for switch',
-        subtitle: 'REDUCE TYPE-CASTING VERBOSITY',
-        code: `// Cleaner type queries and nested object resolution
-static String formatValue(Object obj) {
-    return switch (obj) {
-        case Integer i -> String.format("Integer value: %d", i);
-        case String s  -> String.format("String value of len: %d", s.length());
-        case null      -> "Value is null!";
-        default        -> obj.toString();
-    };
-}`,
-        scenarios: [
-          'Replace complex and repetitive nested if-else structures',
-          'Elegant, safe null handling at the pattern matching layer',
-          'High-level event/state processing architectures'
-        ]
-      },
-      {
-        id: 'textblocks',
-        num: 4,
-        title: 'Text Blocks',
-        subtitle: 'BEAUTIFUL MULTI-LINE STRINGS',
-        code: `// No more backslashes or clumsy concatenation arrays
-String jsonPayload = """
-    {
-        "status": "success",
-        "data": {
-            "version": "17.0.2",
-            "environment": "Production"
-        }
-    }
-    """;`,
-        scenarios: [
-          'Clean embedded database strings (JSON, XML, HTML, SQL)',
-          'Highly readable mock payloads for integration tests',
-          'Templates without bulky configuration dependencies'
-        ]
-      },
-      {
-        id: 'prngs',
-        num: 5,
-        title: 'Enhanced PRNGs',
-        subtitle: 'MODERN PSEUDO-RANDOM GENERATION',
-        code: `// Switch and configure random generators easily
-RandomGenerator generator = RandomGeneratorFactory
-    .of("L128X256MixRandom")
-    .create();
-
-double sampleValue = generator.nextDouble();`,
-        scenarios: [
-          'High-performance statistical modeling simulations',
-          'Thread-safe random pipelines across stream elements',
-          'Interchangeable random algorithms without changing clients'
-        ]
-      }
-    ]
-  },
-  react19: {
-    name: 'React 19 & Frontend',
-    title: 'REACT 19: MODERN FRONTLINE PATTERNS',
-    subtitle: 'ASYNC MUTATIONS, ACTIONS API, AND RENDER OPTIMIZATIONS',
-    category: 'Frontend Engineering Cheat Sheet',
-    footerBrand: 'React Dev Community',
-    themeId: 'nord',
-    features: [
-      {
-        id: 'use',
-        num: 1,
-        title: 'The "use" Hook API',
-        subtitle: 'UNIFIED ASYNC RESOURCE ACCESS',
-        code: `// Fetch promise results directly in render lifecycle
-const data = use(fetchDataPromise);
-
-// Conditional context consumption
-if (isLoggedIn) {
-  const profile = use(ProfileContext);
-}`,
-        scenarios: [
-          'Eliminate redundant useEffect declarations for fetch operations',
-          'Access React Context inside loops or conditional blocks',
-          'Clean suspense integrations for fallback load states'
-        ]
-      },
-      {
-        id: 'actions',
-        num: 2,
-        title: 'React Actions & Forms',
-        subtitle: 'NATIVE FORM ASYNC HANDLING',
-        code: `// Automatic pending state and submission tracking
-<form action={async (formData) => {
-  const response = await signupUser(formData);
-  if (response.error) {
-    showErrorNotification(response.error);
-  }
-}}>
-  <input name="username" type="text" />
-</form>`,
-        scenarios: [
-          'Manage pending indicator state automatically via useTransition',
-          'Eliminate manual event.preventDefault() Form handles',
-          'Natively bound reset hooks for inputs on success'
-        ]
-      },
-      {
-        id: 'compiler',
-        num: 3,
-        title: 'React Compiler Engine',
-        subtitle: 'ELIMINATE MANUAL MEMOIZATION',
-        code: `// React Compiler automatically memoizes components!
-// You no longer need to write:
-// - useMemo(() => computeValue(a), [a])
-// - useCallback(() => handleAction(), [])
-const SortedList = ({ items }) => {
-  return items.map(item => <Row item={item} />);
-};`,
-        scenarios: [
-          'Optimize render cycles automatically across subtrees',
-          'Clean component definitions without dependency arrays',
-          'Avoid bugs caused by missing dependency references'
-        ]
-      }
-    ]
-  },
-  docker: {
-    name: 'Docker & DevOps Commands',
-    title: 'DOCKER SYSTEM: CONTAINER ENGINE',
-    subtitle: 'ESSENTIAL DESKTOP & DAEMON CLIENT OPERATIONS REFERENCE',
-    category: 'DevOps & Infrastructure Cheat Sheet',
-    footerBrand: 'DevOps OpsHub',
-    themeId: 'cyberpunk',
-    features: [
-      {
-        id: 'build-run',
-        num: 1,
-        title: 'Build & Instantiate',
-        subtitle: 'IMAGE COMPILATION & PORT ROUTING',
-        code: `# Build local directory Dockerfile with version tag
-docker build -t microservice:v1.0 .
-
-# Spin up daemon container with mapped hosts ports
-docker run -d -p 8080:80 --name backend microservice:v1.0`,
-        scenarios: [
-          'Package applications in standard portable image schemas',
-          'Expose isolated container servers to host host interfaces',
-          'Run containers in background detached daemon modes'
-        ]
-      },
-      {
-        id: 'compose',
-        num: 2,
-        title: 'Docker Compose Stacks',
-        subtitle: 'MULTI-CONTAINER ORCHESTRATION',
-        code: `# Start multi-container stack from YAML file
-docker-compose up -d --build
-
-# Stop the stack and prune network interfaces
-docker-compose down -v`,
-        scenarios: [
-          'Spin up full local env stacks (web, database, cache) together',
-          'Declare dependency ordering and environment configurations',
-          'Clean environment tear-downs including persistent volumes'
-        ]
-      },
-      {
-        id: 'cleanup',
-        num: 3,
-        title: 'Pruning & Space Cleanup',
-        subtitle: 'PURGE DEFUNCT ASSETS & STORAGE',
-        code: `# Clear all stopped containers, caches, and unused volumes
-docker system prune -a --volumes
-
-# Clear dangling volumes only
-docker volume prune`,
-        scenarios: [
-          'Free workstation storage disk spaces instantly',
-          'Clean broken image builds and routing states',
-          'Reset environment parameters to zero state'
-        ]
-      }
-    ]
-  },
-  git: {
-    name: 'Git Workflows & Tips',
-    title: 'GIT WORKFLOWS: MASTERING SOURCE CONTROL',
-    subtitle: 'ADVANCED BRANCHING, CHERRY-PICKS, AND CONFLICT RESOLUTIONS',
-    category: 'Source Control & Collaboration Guide',
-    footerBrand: 'Git Dev Ops',
-    themeId: 'nord',
-    features: [
-      {
-        id: 'branching',
-        num: 1,
-        title: 'Feature Branching Workflow',
-        subtitle: 'ISOLATE DEVELOPMENT FROM MAINLINE',
-        code: `# Create and switch to new branch
-git checkout -b feature/user-auth
-
-# Push feature branch to remote origin and track it
-git push -u origin feature/user-auth`,
-        scenarios: [
-          'Develop application features in complete isolation',
-          'Avoid breaking the stable main production branch',
-          'Enable peer code reviews via Pull Requests'
-        ]
-      },
-      {
-        id: 'cherrypick',
-        num: 2,
-        title: 'Cherry-picking Commits',
-        subtitle: 'APPLY SPECIFIC COMMITS ACROSS BRANCHES',
-        code: `# Apply commit hash onto your current branch
-git cherry-pick 7a8f9c2
-
-# Abort cherry-pick if conflicts occur and you want to rollback
-git cherry-pick --abort`,
-        scenarios: [
-          'Port critical hotfixes from dev back to production branch',
-          'Retrieve specific code changes without full merge operations',
-          'Keep release branches clean of unnecessary commit noise'
-        ]
-      },
-      {
-        id: 'conflicts',
-        num: 3,
-        title: 'Merge Conflict Resolution',
-        subtitle: 'RESOLVE CODE INTEGRATION DISCREPANCIES',
-        code: `# Pull remote updates and automatically rebase local work
-git pull --rebase origin main
-
-# Once conflicts are manually fixed, continue the rebase
-git add .
-git rebase --continue`,
-        scenarios: [
-          'Sync local branch commits cleanly with upstream codebases',
-          'Keep a flat, readable, linear commit history tree',
-          'Safely handle overlapping team edits'
-        ]
-      }
-    ]
-  }
-};
 
 const getAspectRatioSuggestion = (aspect) => {
   switch (aspect) {
@@ -831,6 +542,29 @@ export default function App() {
   const [activeTab, setActiveTab] = useState(() => {
     return localStorage.getItem('hub_activeTab') || 'carousel';
   });
+
+  const [templates, setTemplates] = useState(() => {
+    const saved = localStorage.getItem('hub_customTemplates');
+    if (saved) {
+      try {
+        const parsed = JSON.parse(saved);
+        return { ...defaultTemplates, ...parsed };
+      } catch (e) {}
+    }
+    return defaultTemplates;
+  });
+
+  const [showPromptModal, setShowPromptModal] = useState(false);
+
+  useEffect(() => {
+    const customOnly = {};
+    Object.keys(templates).forEach(key => {
+      if (!defaultTemplates[key]) {
+        customOnly[key] = templates[key];
+      }
+    });
+    localStorage.setItem('hub_customTemplates', JSON.stringify(customOnly));
+  }, [templates]);
 
   // --- Unified Toast System State ---
   const [toast, setToast] = useState({ show: false, message: '' });
@@ -970,7 +704,7 @@ export default function App() {
     if (saved) {
       try { return JSON.parse(saved); } catch (e) {}
     }
-    return INFOGRAPHIC_TEMPLATES.java17.features;
+    return defaultTemplates.java17.features;
   });
   const [infographicTheme, setInfographicTheme] = useState(() => {
     const saved = localStorage.getItem('hub_infographicTheme');
@@ -1006,16 +740,16 @@ export default function App() {
   
   // Custom Configurable Header/Footer states
   const [infographicTitle, setInfographicTitle] = useState(() => {
-    return localStorage.getItem('hub_infographicTitle') || INFOGRAPHIC_TEMPLATES.java17.title;
+    return localStorage.getItem('hub_infographicTitle') || defaultTemplates.java17.title;
   });
   const [infographicSubtitle, setInfographicSubtitle] = useState(() => {
-    return localStorage.getItem('hub_infographicSubtitle') || INFOGRAPHIC_TEMPLATES.java17.subtitle;
+    return localStorage.getItem('hub_infographicSubtitle') || defaultTemplates.java17.subtitle;
   });
   const [infographicCategory, setInfographicCategory] = useState(() => {
-    return localStorage.getItem('hub_infographicCategory') || INFOGRAPHIC_TEMPLATES.java17.category;
+    return localStorage.getItem('hub_infographicCategory') || defaultTemplates.java17.category;
   });
   const [infographicFooterBrand, setInfographicFooterBrand] = useState(() => {
-    return localStorage.getItem('hub_infographicFooterBrand') || INFOGRAPHIC_TEMPLATES.java17.footerBrand;
+    return localStorage.getItem('hub_infographicFooterBrand') || defaultTemplates.java17.footerBrand;
   });
 
   // Custom editing states
@@ -1315,7 +1049,7 @@ export default function App() {
   };
 
   const handleImportTemplateToSlides = (templateId) => {
-    const template = INFOGRAPHIC_TEMPLATES[templateId];
+    const template = templates[templateId];
     if (!template) return;
 
     // 1. Create cover slide (Title layout)
@@ -1335,7 +1069,7 @@ export default function App() {
       const scenariosBody = feature.scenarios.map(sc => `• ${sc}`).join('\n');
       return {
         id: `imported-feature-${fIdx}-${Date.now()}`,
-        layout: 'code',
+        layout: feature.layout || 'code',
         title: feature.title,
         subtitle: feature.subtitle,
         code: feature.code,
@@ -1365,6 +1099,128 @@ export default function App() {
     setLinkedinActiveIndex(0);
     setActiveTab('carousel');
     triggerToast(`Loaded "${template.name}" template into Slides Builder!`);
+  };
+
+  const handleImportJsonData = (jsonString) => {
+    try {
+      const template = JSON.parse(jsonString);
+      if (!template.title || !Array.isArray(template.features)) {
+        triggerToast("Invalid JSON: 'title' and 'features' array are required.");
+        return;
+      }
+      const customKey = `custom_${Date.now()}`;
+      const newTemplate = {
+        name: template.name || `Pasted Topic: ${template.title.slice(0, 20)}...`,
+        title: template.title,
+        subtitle: template.subtitle || '',
+        category: template.category || 'Custom Topic Guide',
+        footerBrand: template.footerBrand || companyName,
+        themeId: template.themeId || 'obsidian',
+        features: template.features.map((feature, idx) => ({
+          id: feature.id || `f-${idx}-${Date.now()}`,
+          num: feature.num || (idx + 1),
+          title: feature.title || `Step ${idx + 1}`,
+          subtitle: feature.subtitle || '',
+          layout: feature.layout || 'code',
+          code: feature.code || '',
+          scenarios: Array.isArray(feature.scenarios) ? feature.scenarios : [feature.body || '']
+        }))
+      };
+      setTemplates(prev => ({
+        ...prev,
+        [customKey]: newTemplate
+      }));
+      const coverSlide = {
+        id: `imported-cover-${Date.now()}`,
+        layout: 'title',
+        title: newTemplate.title,
+        subtitle: newTemplate.subtitle,
+        body: '',
+        code: '',
+        quoteAuthor: '',
+        bgOverride: '',
+      };
+      const featureSlides = newTemplate.features.map((feature, fIdx) => {
+        const scenariosBody = feature.scenarios.map(sc => `• ${sc}`).join('\n');
+        return {
+          id: `imported-feature-${fIdx}-${Date.now()}`,
+          layout: feature.layout || 'code',
+          title: feature.title,
+          subtitle: feature.subtitle,
+          code: feature.code,
+          body: scenariosBody,
+          quoteAuthor: '',
+          bgOverride: '',
+        };
+      });
+      const ctaSlide = {
+        id: `imported-cta-${Date.now()}`,
+        layout: 'cta',
+        title: 'Thanks for Reading!',
+        body: 'If you found this helpful, click follow to see daily developer cheat sheets and tips!',
+        code: '',
+        quoteAuthor: '',
+        bgOverride: '',
+      };
+      if (newTemplate.footerBrand) {
+        setCompanyName(newTemplate.footerBrand);
+      }
+      setLinkedinSlides([coverSlide, ...featureSlides, ctaSlide]);
+      setLinkedinActiveIndex(0);
+      setActiveTab('carousel');
+      triggerToast(`Successfully loaded custom topic: "${newTemplate.name}"!`);
+      triggerConfettiCelebration();
+    } catch (err) {
+      console.error(err);
+      triggerToast("Error parsing JSON. Check your syntax/formatting.");
+    }
+  };
+
+  const handleImportJsonToInfographic = (jsonString) => {
+    try {
+      const template = JSON.parse(jsonString);
+      if (!template.title || !Array.isArray(template.features)) {
+        triggerToast("Invalid JSON: 'title' and 'features' array are required.");
+        return;
+      }
+      const customKey = `custom_${Date.now()}`;
+      const newTemplate = {
+        name: template.name || `Pasted Cheat Sheet: ${template.title.slice(0, 20)}...`,
+        title: template.title,
+        subtitle: template.subtitle || '',
+        category: template.category || 'Custom Infographic Guide',
+        footerBrand: template.footerBrand || infographicFooterBrand,
+        themeId: template.themeId || 'obsidian',
+        features: template.features.map((feature, idx) => ({
+          id: feature.id || `f-${idx}-${Date.now()}`,
+          num: feature.num || (idx + 1),
+          title: feature.title || `Step ${idx + 1}`,
+          subtitle: feature.subtitle || '',
+          code: feature.code || '',
+          scenarios: Array.isArray(feature.scenarios) ? feature.scenarios : [feature.body || '']
+        }))
+      };
+      setTemplates(prev => ({
+        ...prev,
+        [customKey]: newTemplate
+      }));
+      setSelectedTemplateId(customKey);
+      setInfographicFeatures(newTemplate.features.map(f => ({ ...f })));
+      setInfographicTitle(newTemplate.title);
+      setInfographicSubtitle(newTemplate.subtitle);
+      setInfographicCategory(newTemplate.category);
+      setInfographicFooterBrand(newTemplate.footerBrand);
+      const matchedTheme = INFOGRAPHIC_THEMES.find(t => t.id === newTemplate.themeId) || INFOGRAPHIC_THEMES[0];
+      setInfographicTheme(matchedTheme);
+      setInfographicActiveSlide(0);
+      setInfographicEditingIndex(null);
+      setActiveTab('infographic');
+      triggerToast(`Loaded custom infographic template: "${newTemplate.name}"!`);
+      triggerConfettiCelebration();
+    } catch (err) {
+      console.error(err);
+      triggerToast("Error parsing JSON. Check your syntax/formatting.");
+    }
   };
 
   const triggerConfettiCelebration = () => {
@@ -1828,7 +1684,7 @@ export default function App() {
   // ==========================================
 
   const handleLoadTemplate = (templateId) => {
-    const template = INFOGRAPHIC_TEMPLATES[templateId];
+    const template = templates[templateId];
     if (!template) return;
     
     setSelectedTemplateId(templateId);
@@ -2074,6 +1930,88 @@ export default function App() {
         </div>
       )}
 
+      {/* Prompt Modal */}
+      {showPromptModal && (
+        <div className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4 z-[90]">
+          <div className="bg-[#0b101d] border border-slate-800 rounded-2xl max-w-xl w-full p-6 shadow-2xl space-y-4">
+            <div className="flex items-center justify-between border-b border-slate-800 pb-3">
+              <h3 className="text-sm font-bold text-white flex items-center gap-2">
+                <Sparkles className="w-4 h-4 text-indigo-400" />
+                LLM Topic Generator Prompt
+              </h3>
+              <button 
+                onClick={() => setShowPromptModal(false)}
+                className="text-slate-400 hover:text-white transition-all"
+              >
+                <X className="w-4 h-4" />
+              </button>
+            </div>
+            
+            <p className="text-xs text-slate-400 leading-relaxed">
+              Copy this prompt, supply it to your LLM (Claude, ChatGPT, Gemini, etc.) with your desired topic, and paste the generated JSON output back into the importer to create custom slides instantly!
+            </p>
+            
+            <textarea
+              readOnly
+              rows={12}
+              value={`You are an expert LinkedIn content creator specializing in developer cheat sheets and technical slides.
+Generate a structured JSON configuration representing a highly viral, developer-focused tutorial or guide for a given topic.
+
+Return ONLY a raw, valid JSON object, with no markdown, backticks, or other explanatory text. Use the following schema:
+
+{
+  "name": "Short label of the topic (e.g. 'Git Branching & Rebase')",
+  "title": "Title for the cover slide (e.g. 'GIT REBASE: MASTERING LINEAR HISTORY')",
+  "subtitle": "Subtitle for the cover slide (e.g. 'HOW TO CLEAN UP YOUR INTEGRATION COMMITS')",
+  "category": "High level category label (e.g. 'DevOps & Git Version Control')",
+  "footerBrand": "Footer watermark branding (e.g. 'Git Mastery Series')",
+  "themeId": "Theme ID to match. Use 'obsidian' (dark gold) or 'nord' (cool slate/blue) or 'cyberpunk' (dark gradient) or 'minimalistWhite'",
+  "features": [
+    {
+      "title": "1. Name of Step/Feature (e.g. 'Interactive Rebase')",
+      "subtitle": "Short benefits/tagline in uppercase (e.g. 'SQUASH AND REORDER COMMITS')",
+      "layout": "Use 'code' for code snippets, 'content' for paragraphs/bullets, or 'comparison' for do vs don't columns",
+      "code": "A clean, production-grade code snippet or terminal shell commands block (use \\n for newlines)",
+      "scenarios": [
+        "A practical real-world scenario bullet point 1",
+        "A practical real-world scenario bullet point 2",
+        "A practical real-world scenario bullet point 3"
+      ]
+    }
+  ]
+}
+
+Note: For 'comparison' layout, the 'scenarios' list will populate the 'DO' column (items split by newlines), and the 'code' text field will populate the 'DON'T' column (items split by newlines).
+
+Produce the configuration for the topic: "[REPLACE_WITH_YOUR_TOPIC_HERE]"`}
+              className="w-full bg-slate-950 border border-slate-800 rounded-lg p-3 text-[11px] text-slate-300 font-mono focus:outline-none focus:border-indigo-500"
+              id="llm-prompt-textarea"
+            />
+            
+            <div className="flex gap-3 pt-2">
+              <button 
+                onClick={() => setShowPromptModal(false)}
+                className="flex-1 py-2 rounded-lg bg-slate-900 border border-slate-800 hover:bg-slate-850 text-xs text-slate-300 font-semibold transition-all"
+              >
+                Close Dialog
+              </button>
+              <button 
+                onClick={() => {
+                  const el = document.getElementById('llm-prompt-textarea');
+                  el.select();
+                  document.execCommand('copy');
+                  triggerToast("Copied LLM prompt template to clipboard!");
+                }}
+                className="flex-1 py-2 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-xs text-white font-bold transition-all shadow-md flex items-center justify-center gap-1.5"
+              >
+                <Copy className="w-3.5 h-3.5" />
+                Copy Prompt Template
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Main Studio Banner Header */}
       <header className="border-b border-slate-800 bg-[#0c101b]/80 backdrop-blur-md sticky top-0 z-50 px-8 py-5">
         <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-6">
@@ -2198,7 +2136,7 @@ export default function App() {
                 <p className="text-[11px] text-slate-400 leading-normal">
                   Instantly build your entire slide carousel by loading one of our pre-designed developer cheat sheets!
                 </p>
-                <div className="flex items-center gap-2">
+                <div className="flex flex-col gap-4">
                   <select
                     onChange={(e) => {
                       if (e.target.value) {
@@ -2210,12 +2148,45 @@ export default function App() {
                     className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2.5 text-xs text-slate-200 focus:outline-none focus:border-indigo-500 cursor-pointer font-medium"
                   >
                     <option value="" disabled>-- Load Pre-designed Cheat Sheet --</option>
-                    {Object.entries(INFOGRAPHIC_TEMPLATES).map(([key, t]) => (
+                    {Object.entries(templates).map(([key, t]) => (
                       <option key={key} value={key}>
                         {t.name}
                       </option>
                     ))}
                   </select>
+
+                  <div className="border-t border-slate-800/80 pt-4 space-y-2.5">
+                    <label className="text-xs text-slate-400 font-semibold block flex items-center justify-between">
+                      Paste Topic JSON Template
+                      <button 
+                        onClick={() => setShowPromptModal(true)} 
+                        type="button"
+                        className="text-[10px] text-indigo-400 hover:text-indigo-300 font-bold uppercase transition-all"
+                      >
+                        Get LLM Prompt
+                      </button>
+                    </label>
+                    <textarea
+                      rows={4}
+                      placeholder='Paste generated JSON data here...'
+                      className="w-full bg-slate-950 border border-slate-800 rounded-lg p-2.5 text-xs text-slate-200 focus:outline-none focus:border-indigo-500 font-mono"
+                      id="pasted-json-input"
+                    />
+                    <button
+                      onClick={() => {
+                        const text = document.getElementById('pasted-json-input').value;
+                        if (!text.trim()) {
+                          triggerToast("JSON input is empty!");
+                          return;
+                        }
+                        handleImportJsonData(text);
+                      }}
+                      type="button"
+                      className="w-full py-2 bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold rounded-lg transition-all shadow-md"
+                    >
+                      Import & Populate Topic
+                    </button>
+                  </div>
                 </div>
               </div>
 
@@ -2775,21 +2746,56 @@ export default function App() {
             <aside className="lg:col-span-5 border border-slate-850 rounded-2xl bg-[#090d16]/70 p-5 space-y-5 overflow-y-auto max-h-[calc(100vh-160px)]">
               
               {/* Presets Selector (Dropdown) */}
-              <div className="space-y-1.5">
-                <label className="text-xs text-slate-400 font-bold uppercase tracking-wider flex items-center gap-1.5">
-                  <Sparkles className="w-4 h-4 text-amber-500" /> Select Framework Cheat Sheet
-                </label>
-                <select
-                  value={selectedTemplateId}
-                  onChange={(e) => handleLoadTemplate(e.target.value)}
-                  className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2.5 text-sm text-slate-200 font-semibold focus:outline-none focus:border-indigo-500"
-                >
-                  {Object.entries(INFOGRAPHIC_TEMPLATES).map(([key, t]) => (
-                    <option key={key} value={key}>
-                      {t.name}
-                    </option>
-                  ))}
-                </select>
+              <div className="bg-[#090d16]/70 border border-slate-850 rounded-2xl p-5 space-y-4">
+                <div className="space-y-1.5">
+                  <label className="text-xs text-slate-400 font-bold uppercase tracking-wider flex items-center gap-1.5">
+                    <Sparkles className="w-4 h-4 text-amber-500" /> Select Framework Cheat Sheet
+                  </label>
+                  <select
+                    value={selectedTemplateId}
+                    onChange={(e) => handleLoadTemplate(e.target.value)}
+                    className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2.5 text-sm text-slate-200 font-semibold focus:outline-none focus:border-indigo-500"
+                  >
+                    {Object.entries(templates).map(([key, t]) => (
+                      <option key={key} value={key}>
+                        {t.name}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+
+                <div className="border-t border-slate-800/80 pt-4 space-y-2.5">
+                  <label className="text-xs text-slate-400 font-semibold block flex items-center justify-between">
+                    Paste Topic JSON Template
+                    <button 
+                      onClick={() => setShowPromptModal(true)} 
+                      type="button"
+                      className="text-[10px] text-indigo-400 hover:text-indigo-300 font-bold uppercase transition-all"
+                    >
+                      Get LLM Prompt
+                    </button>
+                  </label>
+                  <textarea
+                    rows={4}
+                    placeholder='Paste generated JSON data here...'
+                    className="w-full bg-slate-950 border border-slate-800 rounded-lg p-2.5 text-xs text-slate-200 focus:outline-none focus:border-indigo-500 font-mono"
+                    id="infographic-pasted-json-input"
+                  />
+                  <button
+                    onClick={() => {
+                      const text = document.getElementById('infographic-pasted-json-input').value;
+                      if (!text.trim()) {
+                        triggerToast("JSON input is empty!");
+                        return;
+                      }
+                      handleImportJsonToInfographic(text);
+                    }}
+                    type="button"
+                    className="w-full py-2 bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold rounded-lg transition-all shadow-md"
+                  >
+                    Import & Populate Infographic
+                  </button>
+                </div>
               </div>
 
               {/* Infographic Layout Information */}
