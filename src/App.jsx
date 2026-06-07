@@ -1,6 +1,12 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { jsPDF } from 'jspdf';
 import html2canvas from 'html2canvas';
+import confetti from 'canvas-confetti';
+import Prism from 'prismjs';
+import 'prismjs/components/prism-python';
+import 'prismjs/components/prism-bash';
+import 'prismjs/components/prism-sql';
+import 'prismjs/themes/prism-tomorrow.css';
 import {
   Sparkles,
   Download,
@@ -922,6 +928,13 @@ export default function App() {
   const [linkedinSwipeText, setLinkedinSwipeText] = useState(() => {
     return localStorage.getItem('hub_linkedinSwipeText') || 'Swipe Next';
   });
+  const [linkedinPattern, setLinkedinPattern] = useState(() => {
+    return localStorage.getItem('hub_linkedinPattern') || 'dots';
+  });
+  const [linkedinPatternOpacity, setLinkedinPatternOpacity] = useState(() => {
+    const saved = localStorage.getItem('hub_linkedinPatternOpacity');
+    return saved !== null ? parseInt(saved, 10) : 3;
+  });
 
   // Branding details
   const [profileName, setProfileName] = useState(() => {
@@ -943,6 +956,7 @@ export default function App() {
   // Zoom / Scale State
   const [linkedinScale, setLinkedinScale] = useState(0.4);
   const [linkedinExporting, setLinkedinExporting] = useState(null);
+  const [linkedinCopying, setLinkedinCopying] = useState(false);
 
 
   // ==========================================
@@ -1062,6 +1076,14 @@ export default function App() {
   useEffect(() => {
     localStorage.setItem('hub_linkedinSwipeText', linkedinSwipeText);
   }, [linkedinSwipeText]);
+
+  useEffect(() => {
+    localStorage.setItem('hub_linkedinPattern', linkedinPattern);
+  }, [linkedinPattern]);
+
+  useEffect(() => {
+    localStorage.setItem('hub_linkedinPatternOpacity', linkedinPatternOpacity.toString());
+  }, [linkedinPatternOpacity]);
 
   useEffect(() => {
     localStorage.setItem('hub_profileName', profileName);
@@ -1345,6 +1367,28 @@ export default function App() {
     triggerToast(`Loaded "${template.name}" template into Slides Builder!`);
   };
 
+  const triggerConfettiCelebration = () => {
+    const duration = 2 * 1000;
+    const end = Date.now() + duration;
+    (function frame() {
+      confetti({
+        particleCount: 3,
+        angle: 60,
+        spread: 55,
+        origin: { x: 0, y: 0.8 }
+      });
+      confetti({
+        particleCount: 3,
+        angle: 120,
+        spread: 55,
+        origin: { x: 1, y: 0.8 }
+      });
+      if (Date.now() < end) {
+        requestAnimationFrame(frame);
+      }
+    }());
+  };
+
   const downloadCarouselPDF = async () => {
     setLinkedinExporting('pdf');
     await new Promise(resolve => setTimeout(resolve, 500));
@@ -1384,6 +1428,7 @@ export default function App() {
     doc.save(`linkedin-carousel-${Date.now()}.pdf`);
     setLinkedinExporting(null);
     triggerToast("Carousel PDF downloaded successfully!");
+    triggerConfettiCelebration();
   };
 
   const downloadCarouselImages = async () => {
@@ -1419,11 +1464,62 @@ export default function App() {
         await new Promise(resolve => setTimeout(resolve, 150));
       }
       triggerToast("All slides exported as PNG images successfully!");
+      triggerConfettiCelebration();
     } catch (error) {
       console.error("Image export error:", error);
       triggerToast("Failed to export some slides as images.");
     } finally {
       setLinkedinExporting(null);
+    }
+  };
+
+  const copySlideToClipboard = async () => {
+    if (linkedinCopying || linkedinExporting) return;
+    setLinkedinCopying(true);
+    triggerToast("Generating slide image for clipboard...");
+    await new Promise(resolve => setTimeout(resolve, 100));
+    const width = 1080;
+    const height = linkedinAspect === 'portrait' ? 1350 : 1080;
+    try {
+      const element = document.getElementById(`slide-export-${linkedinActiveIndex}`);
+      if (!element) {
+        throw new Error("Export element not found");
+      }
+      const canvas = await html2canvas(element, {
+        scale: 2,
+        useCORS: true,
+        allowTaint: true,
+        logging: false,
+        width: width,
+        height: height,
+      });
+      canvas.toBlob(async (blob) => {
+        if (!blob) {
+          triggerToast("Failed to generate slide image blob.");
+          setLinkedinCopying(false);
+          return;
+        }
+        try {
+          await navigator.clipboard.write([
+            new ClipboardItem({ 'image/png': blob })
+          ]);
+          triggerToast("Copied active slide as PNG to clipboard!");
+          confetti({
+            particleCount: 50,
+            spread: 60,
+            origin: { y: 0.8 }
+          });
+        } catch (err) {
+          console.error("Clipboard write error:", err);
+          triggerToast("Clipboard block: paste permissions or browser support missing.");
+        } finally {
+          setLinkedinCopying(false);
+        }
+      }, 'image/png');
+    } catch (error) {
+      console.error("Copy to clipboard error:", error);
+      triggerToast("Failed to copy slide to clipboard.");
+      setLinkedinCopying(false);
     }
   };
 
@@ -1440,14 +1536,40 @@ export default function App() {
     const borderStyle = theme.border || 'border-blue-400/30';
     const codeBg = theme.codeBg || 'bg-slate-900/80';
 
+    const getPatternStyle = () => {
+      if (linkedinPattern === 'none') return { display: 'none' };
+      const isDark = linkedinTheme !== 'minimalistWhite';
+      const color = isDark ? 'rgba(255, 255, 255, 1)' : 'rgba(0, 0, 0, 1)';
+      let bgImage = '';
+      let bgSize = '24px 24px';
+      if (linkedinPattern === 'dots') {
+        bgImage = `radial-gradient(circle, ${color} 1.5px, transparent 1.5px)`;
+        bgSize = '24px 24px';
+      } else if (linkedinPattern === 'grid') {
+        bgImage = `linear-gradient(to right, ${color} 1px, transparent 1px), linear-gradient(to bottom, ${color} 1px, transparent 1px)`;
+        bgSize = '36px 36px';
+      } else if (linkedinPattern === 'stripes') {
+        bgImage = `linear-gradient(45deg, ${color} 25%, transparent 25%, transparent 75%, ${color} 75%, ${color})`;
+        bgSize = '36px 36px';
+      }
+      return {
+        backgroundImage: bgImage,
+        backgroundSize: bgSize,
+        opacity: linkedinPatternOpacity / 100,
+      };
+    };
+
     return (
       <div 
         id={isForExport ? `slide-export-${index}` : undefined}
         className={`w-[1080px] ${linkedinAspect === 'portrait' ? 'h-[1350px]' : 'h-[1080px]'} relative flex flex-col justify-between p-20 select-none overflow-hidden ${bgStyle} ${fontClass}`}
         style={{ ...(linkedinFontStyles[fontClass] || {}), boxSizing: 'border-box' }}
       >
-        {linkedinTheme !== 'minimalistWhite' && (
-          <div className="absolute inset-0 opacity-[0.03] pointer-events-none bg-[radial-gradient(#fff_1px,transparent_1px)] [background-size:24px_24px]"></div>
+        {linkedinPattern !== 'none' && (
+          <div 
+            className="absolute inset-0 pointer-events-none" 
+            style={getPatternStyle()}
+          ></div>
         )}
 
         {/* --- HEADER --- */}
@@ -1504,35 +1626,108 @@ export default function App() {
             </div>
           )}
 
-          {slide.layout === 'code' && (
-            <div className="space-y-6">
+          {slide.layout === 'comparison' && (
+            <div className="space-y-8 h-full flex flex-col justify-center">
               {slide.title && (
-                <h2 className={`text-[42px] font-extrabold tracking-tight ${textStyle}`}>
+                <h2 className={`text-5xl font-extrabold leading-snug tracking-tight ${textStyle}`}>
                   {renderHighlightedText(slide.title, accentStyle)}
                 </h2>
               )}
-              <div className="space-y-4">
-                <div className={`rounded-2xl overflow-hidden shadow-2xl ${codeBg} border ${borderStyle}`}>
-                  <div className="flex items-center justify-between px-6 py-4 bg-black/30 border-b border-white/5">
-                    <div className="flex items-center gap-2">
-                      <div className="w-4 h-4 rounded-full bg-red-500/80"></div>
-                      <div className="w-4 h-4 rounded-full bg-yellow-500/80"></div>
-                      <div className="w-4 h-4 rounded-full bg-green-500/80"></div>
+              <div className="grid grid-cols-2 gap-8 flex-1 items-stretch">
+                {/* DO COLUMN */}
+                <div className="flex flex-col bg-emerald-500/[0.04] border border-emerald-500/20 rounded-[24px] p-10 space-y-6 shadow-lg shadow-emerald-950/5">
+                  <div className="flex items-center gap-4 border-b border-emerald-500/10 pb-4">
+                    <div className="p-3 rounded-2xl bg-emerald-500/10 text-emerald-400">
+                      <CheckCircle2 className="w-9 h-9" />
                     </div>
-                    <span className="text-sm font-mono opacity-50 tracking-wider text-slate-300">index.js</span>
+                    <span className="text-3xl font-extrabold tracking-wide text-emerald-400 uppercase">DO</span>
                   </div>
-                  <pre className="p-8 overflow-x-auto text-left font-mono text-[24px] leading-relaxed text-slate-300">
-                    <code>{slide.code}</code>
-                  </pre>
+                  <ul className={`text-[25px] leading-[1.6] space-y-4 font-normal ${theme.subtitle}`}>
+                    {slide.body ? slide.body.split('\n').filter(Boolean).map((item, idx) => (
+                      <li key={idx} className="flex items-start gap-3">
+                        <span className="text-emerald-400 mt-1.5 shrink-0 text-xl font-bold">✓</span>
+                        <span>{renderHighlightedText(item, accentStyle)}</span>
+                      </li>
+                    )) : (
+                      <li className="opacity-40 italic text-xl">Enter DO list items...</li>
+                    )}
+                  </ul>
                 </div>
-                {slide.body && (
-                  <p className={`text-2xl italic tracking-wide mt-2 ${theme.subtitle}`}>
-                    {renderHighlightedText(slide.body, accentStyle)}
-                  </p>
-                )}
+
+                {/* DON'T COLUMN */}
+                <div className="flex flex-col bg-rose-500/[0.04] border border-rose-500/20 rounded-[24px] p-10 space-y-6 shadow-lg shadow-rose-950/5">
+                  <div className="flex items-center gap-4 border-b border-rose-500/10 pb-4">
+                    <div className="p-3 rounded-2xl bg-rose-500/10 text-rose-400">
+                      <X className="w-9 h-9" />
+                    </div>
+                    <span className="text-3xl font-extrabold tracking-wide text-rose-400 uppercase">DON'T</span>
+                  </div>
+                  <ul className={`text-[25px] leading-[1.6] space-y-4 font-normal ${theme.subtitle}`}>
+                    {slide.code ? slide.code.split('\n').filter(Boolean).map((item, idx) => (
+                      <li key={idx} className="flex items-start gap-3">
+                        <span className="text-rose-400 mt-1.5 shrink-0 text-xl font-bold">✗</span>
+                        <span>{renderHighlightedText(item, accentStyle)}</span>
+                      </li>
+                    )) : (
+                      <li className="opacity-40 italic text-xl">Enter DON'T list items...</li>
+                    )}
+                  </ul>
+                </div>
               </div>
             </div>
           )}
+
+          {slide.layout === 'code' && (() => {
+            const lang = slide.codeLanguage || 'javascript';
+            const grammar = Prism.languages[lang] || Prism.languages.javascript || Prism.languages.clike;
+            let highlightedHtml = '';
+            try {
+              highlightedHtml = Prism.highlight(slide.code || '', grammar, lang);
+            } catch (err) {
+              console.error(err);
+              highlightedHtml = slide.code || '';
+            }
+            const getLangFilename = (l) => {
+              const mapping = {
+                javascript: 'index.js',
+                python: 'main.py',
+                css: 'styles.css',
+                html: 'index.html',
+                bash: 'deploy.sh',
+                sql: 'query.sql'
+              };
+              return mapping[l] || 'index.js';
+            };
+            return (
+              <div className="space-y-6">
+                {slide.title && (
+                  <h2 className={`text-[42px] font-extrabold tracking-tight ${textStyle}`}>
+                    {renderHighlightedText(slide.title, accentStyle)}
+                  </h2>
+                )}
+                <div className="space-y-4">
+                  <div className={`rounded-2xl overflow-hidden shadow-2xl ${codeBg} border ${borderStyle}`}>
+                    <div className="flex items-center justify-between px-6 py-4 bg-black/30 border-b border-white/5">
+                      <div className="flex items-center gap-2">
+                        <div className="w-4 h-4 rounded-full bg-red-500/80"></div>
+                        <div className="w-4 h-4 rounded-full bg-yellow-500/80"></div>
+                        <div className="w-4 h-4 rounded-full bg-green-500/80"></div>
+                      </div>
+                      <span className="text-sm font-mono opacity-50 tracking-wider text-slate-300">{getLangFilename(lang)}</span>
+                    </div>
+                    <pre className="p-8 overflow-x-auto text-left font-mono text-[24px] leading-relaxed text-slate-300">
+                      <code dangerouslySetInnerHTML={{ __html: highlightedHtml }} />
+                    </pre>
+                  </div>
+                  {slide.body && (
+                    <p className={`text-2xl italic tracking-wide mt-2 ${theme.subtitle}`}>
+                      {renderHighlightedText(slide.body, accentStyle)}
+                    </p>
+                  )}
+                </div>
+              </div>
+            );
+          })()}
 
           {slide.layout === 'quote' && (
             <div className="relative text-center max-w-4xl mx-auto space-y-8">
@@ -2157,6 +2352,39 @@ export default function App() {
                   </div>
                 </div>
 
+                {/* Pattern Settings */}
+                <div className="grid grid-cols-2 gap-4 pt-1">
+                  {/* Pattern select */}
+                  <div className="space-y-1">
+                    <label className="text-xs text-slate-400 font-semibold">Bg Pattern</label>
+                    <select
+                      value={linkedinPattern}
+                      onChange={(e) => setLinkedinPattern(e.target.value)}
+                      className="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-sm text-slate-200 focus:outline-none focus:border-blue-500"
+                    >
+                      <option value="none">None (Plain)</option>
+                      <option value="dots">Dots Pattern</option>
+                      <option value="grid">Grid Pattern</option>
+                      <option value="stripes">Stripes Pattern</option>
+                    </select>
+                  </div>
+                  {/* Pattern opacity */}
+                  <div className="space-y-1">
+                    <label className="text-xs text-slate-400 font-semibold">Pattern Opacity ({linkedinPatternOpacity}%)</label>
+                    <div className="flex items-center h-[38px]">
+                      <input
+                        type="range"
+                        min="0"
+                        max="20"
+                        step="1"
+                        value={linkedinPatternOpacity}
+                        onChange={(e) => setLinkedinPatternOpacity(parseInt(e.target.value, 10))}
+                        className="w-full accent-blue-600 bg-slate-950 cursor-pointer"
+                      />
+                    </div>
+                  </div>
+                </div>
+
                 {/* Toggles */}
                 <div className="space-y-3 pt-2">
                   <label className="flex items-center gap-3 cursor-pointer">
@@ -2236,6 +2464,7 @@ export default function App() {
                   >
                     <option value="title">Title (Intro Slide)</option>
                     <option value="content">Content (Bullet points & paragraphs)</option>
+                    <option value="comparison">Comparison (DO vs DON'T Columns)</option>
                     <option value="code">Code Snippet (macOS IDE Mockup)</option>
                     <option value="quote">Quote Box (Inspiring quote)</option>
                     <option value="cta">CTA (Profile pitch & Follow button)</option>
@@ -2298,14 +2527,62 @@ export default function App() {
                 )}
 
                 {linkedinSlides[linkedinActiveIndex]?.layout === 'code' && (
-                  <div className="space-y-1">
-                    <label className="text-xs text-slate-400 font-semibold">Code Block Content</label>
-                    <textarea
-                      rows={6}
-                      value={linkedinSlides[linkedinActiveIndex]?.code || ''}
-                      onChange={(e) => linkedinUpdateSlide({ code: e.target.value })}
-                      className="w-full bg-slate-950 border border-slate-800 rounded-lg p-3 text-sm text-slate-200 focus:outline-none focus:border-blue-500 font-mono"
-                    />
+                  <div className="space-y-3">
+                    <div className="space-y-1">
+                      <label className="text-xs text-slate-400 font-semibold">Code Block Content</label>
+                      <textarea
+                        rows={6}
+                        value={linkedinSlides[linkedinActiveIndex]?.code || ''}
+                        onChange={(e) => linkedinUpdateSlide({ code: e.target.value })}
+                        className="w-full bg-slate-950 border border-slate-800 rounded-lg p-3 text-sm text-slate-200 focus:outline-none focus:border-blue-500 font-mono"
+                      />
+                    </div>
+                    <div className="space-y-1">
+                      <label className="text-xs text-slate-400 font-semibold">Code Language</label>
+                      <select
+                        value={linkedinSlides[linkedinActiveIndex]?.codeLanguage || 'javascript'}
+                        onChange={(e) => linkedinUpdateSlide({ codeLanguage: e.target.value })}
+                        className="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-sm text-slate-200 focus:outline-none focus:border-blue-500"
+                      >
+                        <option value="javascript">JavaScript / TypeScript</option>
+                        <option value="python">Python</option>
+                        <option value="css">CSS</option>
+                        <option value="html">HTML / XML</option>
+                        <option value="bash">Bash / Shell</option>
+                        <option value="sql">SQL</option>
+                      </select>
+                    </div>
+                  </div>
+                )}
+
+                {linkedinSlides[linkedinActiveIndex]?.layout === 'comparison' && (
+                  <div className="space-y-4">
+                    <div className="space-y-1">
+                      <label className="text-xs text-slate-400 font-semibold flex items-center justify-between">
+                        DO Column Items (one per line)
+                        <span className="text-[10px] text-emerald-400 font-bold uppercase">Green column</span>
+                      </label>
+                      <textarea
+                        rows={4}
+                        value={linkedinSlides[linkedinActiveIndex]?.body || ''}
+                        onChange={(e) => linkedinUpdateSlide({ body: e.target.value })}
+                        className="w-full bg-slate-950 border border-slate-800 rounded-lg p-3 text-sm text-slate-200 focus:outline-none focus:border-blue-500 font-mono"
+                        placeholder="Use a professional portrait&#10;Write a benefit-driven headline"
+                      />
+                    </div>
+                    <div className="space-y-1">
+                      <label className="text-xs text-slate-400 font-semibold flex items-center justify-between">
+                        DON'T Column Items (one per line)
+                        <span className="text-[10px] text-rose-400 font-bold uppercase">Red column</span>
+                      </label>
+                      <textarea
+                        rows={4}
+                        value={linkedinSlides[linkedinActiveIndex]?.code || ''}
+                        onChange={(e) => linkedinUpdateSlide({ code: e.target.value })}
+                        className="w-full bg-slate-950 border border-slate-800 rounded-lg p-3 text-sm text-slate-200 focus:outline-none focus:border-blue-500 font-mono"
+                        placeholder="Use blurry mirror selfies&#10;List job title only without achievements"
+                      />
+                    </div>
                   </div>
                 )}
               </div>
@@ -2399,6 +2676,24 @@ export default function App() {
 
               {/* Action Buttons */}
               <div className="w-full flex flex-wrap gap-4 justify-end">
+                <button
+                  onClick={copySlideToClipboard}
+                  disabled={linkedinCopying || linkedinExporting !== null}
+                  className="flex items-center justify-center gap-3 px-6 py-4 bg-slate-900 hover:bg-slate-850 text-slate-100 hover:text-white border border-slate-800 hover:border-slate-700 font-extrabold rounded-2xl shadow-xl transition-all text-base disabled:opacity-50"
+                >
+                  {linkedinCopying ? (
+                    <>
+                      <RefreshCw className="w-5 h-5 animate-spin" />
+                      Copying Slide...
+                    </>
+                  ) : (
+                    <>
+                      <Copy className="w-5 h-5 text-indigo-400" />
+                      Copy Active Slide
+                    </>
+                  )}
+                </button>
+
                 <button
                   onClick={downloadCarouselImages}
                   disabled={linkedinExporting !== null}
