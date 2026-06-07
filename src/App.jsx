@@ -159,6 +159,7 @@ const LINKEDIN_THEMES = {
     codeBg: 'bg-slate-50 border border-slate-200',
     numberText: 'text-slate-500',
     tagColor: 'text-[#0a66c2]',
+    codeTheme: 'light',
   },
   cyberpunk: {
     name: 'Cyberpunk Neon',
@@ -237,6 +238,100 @@ const LINKEDIN_THEMES = {
     codeBg: 'bg-[#1C0E2B]/60',
     numberText: 'text-purple-300',
     tagColor: 'text-fuchsia-300',
+  },
+  nordicFrost: {
+    name: 'Nordic Frost',
+    bg: 'bg-gradient-to-br from-[#2E3440] to-[#4C566A]',
+    text: 'text-[#ECEFF4]',
+    subtitle: 'text-[#D8DEE9]',
+    accent: 'text-[#88C0D0]',
+    accentBg: 'bg-[#88C0D0]/15',
+    accentColor: '#88c0d0',
+    border: 'border-[#434C5E]/50',
+    codeBg: 'bg-[#2e3440]/90',
+    numberText: 'text-[#81A1C1]',
+    tagColor: 'text-[#8FBCBB]',
+  },
+  rosePine: {
+    name: 'Rose Pine',
+    bg: 'bg-gradient-to-br from-[#191724] to-[#26233a]',
+    text: 'text-[#e0def4]',
+    subtitle: 'text-[#908caa]',
+    accent: 'text-[#ebbcba]',
+    accentBg: 'bg-[#ebbcba]/15',
+    accentColor: '#ebbcba',
+    border: 'border-[#403d52]/40',
+    codeBg: 'bg-[#1f1d2e]/85',
+    numberText: 'text-[#c4a7e7]',
+    tagColor: 'text-[#9ccfd8]',
+  },
+  dracula: {
+    name: 'Dracula',
+    bg: 'bg-gradient-to-br from-[#282a36] to-[#44475a]',
+    text: 'text-[#f8f8f2]',
+    subtitle: 'text-[#6272a4]',
+    accent: 'text-[#ff79c6]',
+    accentBg: 'bg-[#ff79c6]/15',
+    accentColor: '#ff79c6',
+    border: 'border-[#44475a]/50',
+    codeBg: 'bg-[#282a36]/80',
+    numberText: 'text-[#bd93f9]',
+    tagColor: 'text-[#50fa7b]',
+  },
+  forestMoss: {
+    name: 'Forest Moss',
+    bg: 'bg-gradient-to-br from-[#1b2a1a] to-[#2d4a2d]',
+    text: 'text-[#f4f7f4]',
+    subtitle: 'text-[#b4cbb4]',
+    accent: 'text-[#a3e635]',
+    accentBg: 'bg-[#a3e635]/15',
+    accentColor: '#a3e635',
+    border: 'border-[#3f623f]/30',
+    codeBg: 'bg-[#142013]/70',
+    numberText: 'text-[#86efac]',
+    tagColor: 'text-[#a7f3d0]',
+  },
+  warmEditorial: {
+    name: 'Warm Editorial',
+    bg: 'bg-[#FAF6EE] border border-stone-200',
+    text: 'text-[#2C241E]',
+    subtitle: 'text-[#6B5A4E]',
+    accent: 'text-[#C85A32]',
+    accentBg: 'bg-[#C85A32]/10',
+    accentColor: '#C85A32',
+    border: 'border-stone-300',
+    codeBg: 'bg-[#F3EDE2] border border-stone-200',
+    numberText: 'text-[#8B7564]',
+    tagColor: 'text-[#C85A32]',
+    codeTheme: 'light',
+  },
+  lavenderMist: {
+    name: 'Lavender Mist',
+    bg: 'bg-[#F5F3FF] border border-violet-100',
+    text: 'text-[#1E1B4B]',
+    subtitle: 'text-[#6D28D9]',
+    accent: 'text-[#8B5CF6]',
+    accentBg: 'bg-[#8B5CF6]/10',
+    accentColor: '#8B5CF6',
+    border: 'border-violet-200',
+    codeBg: 'bg-[#EDE9FE] border border-violet-250',
+    numberText: 'text-[#7C3AED]',
+    tagColor: 'text-[#8B5CF6]',
+    codeTheme: 'light',
+  },
+  solarizedLight: {
+    name: 'Solarized Light',
+    bg: 'bg-[#FDF6E3] border border-[#EADEBA]',
+    text: 'text-[#657B83]',
+    subtitle: 'text-[#586E75]',
+    accent: 'text-[#268BD2]',
+    accentBg: 'bg-[#268BD2]/10',
+    accentColor: '#268BD2',
+    border: 'border-[#EADEBA]/70',
+    codeBg: 'bg-[#EEE8D5] border border-[#EADEBA]',
+    numberText: 'text-[#93A1A1]',
+    tagColor: 'text-[#2AA198]',
+    codeTheme: 'light',
   }
 };
 
@@ -440,6 +535,113 @@ const INFOGRAPHIC_THEMES = [
     accentBg: 'bg-[#D946EF]/10',
     gradient: 'from-[#06020A] via-[#0E0616] to-[#1F072E]',
     badgeBg: 'bg-fuchsia-500/15 text-fuchsia-400 border-fuchsia-500/30'
+  },
+  {
+    id: 'rosePine',
+    name: 'Rose Pine',
+    bg: 'bg-[#191724]',
+    cardBg: 'bg-[#1f1d2e]/95 border-[#403d52]/50',
+    textColor: 'text-[#e0def4]',
+    subtitleColor: 'text-[#908caa]',
+    accent: '#ebbcba',
+    accentClass: 'text-[#ebbcba] border-[#ebbcba]',
+    accentBg: 'bg-[#ebbcba]/10',
+    gradient: 'from-[#12101a] via-[#191724] to-[#26233a]',
+    badgeBg: 'bg-[#ebbcba]/15 text-[#e0def4] border-[#ebbcba]/30'
+  },
+  {
+    id: 'dracula',
+    name: 'Dracula',
+    bg: 'bg-[#282a36]',
+    cardBg: 'bg-[#343746]/95 border-[#44475a]',
+    textColor: 'text-[#f8f8f2]',
+    subtitleColor: 'text-[#6272a4]',
+    accent: '#ff79c6',
+    accentClass: 'text-[#ff79c6] border-[#ff79c6]',
+    accentBg: 'bg-[#ff79c6]/10',
+    gradient: 'from-[#1a1c24] via-[#282a36] to-[#3d4153]',
+    badgeBg: 'bg-[#ff79c6]/15 text-[#ff79c6] border-[#ff79c6]/30'
+  },
+  {
+    id: 'forestMoss',
+    name: 'Forest Moss',
+    bg: 'bg-[#1b2a1a]',
+    cardBg: 'bg-[#253a24]/95 border-[#3f623f]/50',
+    textColor: 'text-[#f4f7f4]',
+    subtitleColor: 'text-[#b4cbb4]',
+    accent: '#a3e635',
+    accentClass: 'text-[#a3e635] border-[#a3e635]',
+    accentBg: 'bg-[#a3e635]/10',
+    gradient: 'from-[#101a0f] via-[#1b2a1a] to-[#2d4a2d]',
+    badgeBg: 'bg-[#a3e635]/15 text-[#a3e635] border-[#a3e635]/30'
+  },
+  {
+    id: 'minimalistWhite',
+    name: 'Minimalist White',
+    bg: 'bg-white',
+    cardBg: 'bg-slate-50 border-slate-200',
+    textColor: 'text-slate-900',
+    subtitleColor: 'text-slate-600',
+    accent: '#0a66c2',
+    accentClass: 'text-[#0a66c2] border-[#0a66c2]',
+    accentBg: 'bg-[#0a66c2]/10',
+    gradient: 'from-white via-slate-50 to-slate-100',
+    badgeBg: 'bg-[#0a66c2]/10 text-[#0a66c2] border-[#0a66c2]/20',
+    border: 'border-slate-200',
+    codeBg: 'bg-slate-100 border border-slate-200',
+    codeBorder: 'border-slate-200',
+    codeTextColor: 'text-slate-800'
+  },
+  {
+    id: 'warmEditorial',
+    name: 'Warm Editorial',
+    bg: 'bg-[#FAF6EE]',
+    cardBg: 'bg-[#F3EDE2] border-stone-200',
+    textColor: 'text-[#2C241E]',
+    subtitleColor: 'text-[#6B5A4E]',
+    accent: '#C85A32',
+    accentClass: 'text-[#C85A32] border-[#C85A32]',
+    accentBg: 'bg-[#C85A32]/10',
+    gradient: 'from-[#FCFBF9] via-[#FAF6EE] to-[#F3EDE2]',
+    badgeBg: 'bg-[#C85A32]/10 text-[#C85A32] border-[#C85A32]/20',
+    border: 'border-stone-200',
+    codeBg: 'bg-[#EFE7D8] border border-stone-200',
+    codeBorder: 'border-stone-200',
+    codeTextColor: 'text-[#2C241E]'
+  },
+  {
+    id: 'lavenderMist',
+    name: 'Lavender Mist',
+    bg: 'bg-[#F5F3FF]',
+    cardBg: 'bg-[#EDE9FE] border-violet-200',
+    textColor: 'text-[#1E1B4B]',
+    subtitleColor: 'text-[#6D28D9]',
+    accent: '#8B5CF6',
+    accentClass: 'text-[#8B5CF6] border-[#8B5CF6]',
+    accentBg: 'bg-[#8B5CF6]/10',
+    gradient: 'from-white via-[#F5F3FF] to-[#EDE9FE]',
+    badgeBg: 'bg-[#8B5CF6]/10 text-[#8B5CF6] border-[#8B5CF6]/20',
+    border: 'border-violet-200',
+    codeBg: 'bg-[#E0DAFA] border border-violet-250',
+    codeBorder: 'border-violet-250',
+    codeTextColor: 'text-[#1E1B4B]'
+  },
+  {
+    id: 'solarizedLight',
+    name: 'Solarized Light',
+    bg: 'bg-[#FDF6E3]',
+    cardBg: 'bg-[#EEE8D5] border-[#EADEBA]',
+    textColor: 'text-[#657B83]',
+    subtitleColor: 'text-[#586E75]',
+    accent: '#268BD2',
+    accentClass: 'text-[#268BD2] border-[#268BD2]',
+    accentBg: 'bg-[#268BD2]/10',
+    gradient: 'from-[#FFFDF6] via-[#FDF6E3] to-[#EEE8D5]',
+    badgeBg: 'bg-[#268BD2]/10 text-[#268BD2] border-[#268BD2]/20',
+    border: 'border-[#EADEBA]/70',
+    codeBg: 'bg-[#E3DCB9] border border-[#DCD3A9]',
+    codeBorder: 'border-[#DCD3A9]',
+    codeTextColor: 'text-[#586E75]'
   }
 ];
 
@@ -1554,6 +1756,11 @@ export default function App() {
               };
               return mapping[l] || 'index.js';
             };
+            const isLightCode = theme.codeTheme === 'light';
+            const codeTextColor = isLightCode ? 'text-slate-800' : 'text-slate-300';
+            const codeHeaderBg = isLightCode ? 'bg-slate-200/60 border-b border-slate-300/40' : 'bg-black/30 border-b border-white/5';
+            const codeHeaderTextColor = isLightCode ? 'text-slate-600' : 'text-slate-300';
+
             return (
               <div className="space-y-6">
                 {slide.title && (
@@ -1563,16 +1770,16 @@ export default function App() {
                 )}
                 <div className="space-y-4">
                   <div className={`rounded-2xl overflow-hidden shadow-2xl ${codeBg} border ${borderStyle}`}>
-                    <div className="flex items-center justify-between px-6 py-4 bg-black/30 border-b border-white/5">
+                    <div className={`flex items-center justify-between px-6 py-4 ${codeHeaderBg}`}>
                       <div className="flex items-center gap-2">
                         <div className="w-4 h-4 rounded-full bg-red-500/80"></div>
                         <div className="w-4 h-4 rounded-full bg-yellow-500/80"></div>
                         <div className="w-4 h-4 rounded-full bg-green-500/80"></div>
                       </div>
-                      <span className="text-sm font-mono opacity-50 tracking-wider text-slate-300">{getLangFilename(lang)}</span>
+                      <span className={`text-sm font-mono opacity-60 tracking-wider ${codeHeaderTextColor}`}>{getLangFilename(lang)}</span>
                     </div>
-                    <pre className="p-8 overflow-x-auto text-left font-mono text-[24px] leading-relaxed text-slate-300">
-                      <code dangerouslySetInnerHTML={{ __html: highlightedHtml }} />
+                    <pre className={`p-8 overflow-x-auto text-left font-mono text-[24px] leading-relaxed ${codeTextColor}`}>
+                      <code className={isLightCode ? 'light-code-highlight' : ''} dangerouslySetInnerHTML={{ __html: highlightedHtml }} />
                     </pre>
                   </div>
                   {slide.body && (
@@ -3263,17 +3470,17 @@ Produce the configuration for the topic: "[REPLACE_WITH_YOUR_TOPIC_HERE]"`}
                       />
 
                       {/* Cover Main Heading */}
-                      <header className="mb-10 border-b border-slate-800/80 pb-6 relative">
+                      <header className={`mb-10 border-b pb-6 relative ${infographicTheme.border || 'border-slate-800/80'}`}>
                         <div className="flex items-center gap-2 mb-3">
-                          <span className="text-[10px] font-extrabold uppercase tracking-[0.25em] text-slate-400">
+                          <span className={`text-[10px] font-extrabold uppercase tracking-[0.25em] ${infographicTheme.subtitleColor || 'text-slate-400'}`}>
                             {infographicCategory}
                           </span>
                         </div>
 
-                        <h1 className="text-[26px] font-extrabold tracking-tight leading-none mb-3 text-white">
+                        <h1 className={`text-[26px] font-extrabold tracking-tight leading-none mb-3 ${infographicTheme.textColor || 'text-white'}`}>
                           {infographicTitle}
                         </h1>
-                        <p className="text-xs text-slate-400 leading-relaxed max-w-lg">
+                        <p className={`text-xs leading-relaxed max-w-lg ${infographicTheme.subtitleColor || 'text-slate-400'}`}>
                           {infographicSubtitle}
                         </p>
 
@@ -3304,7 +3511,7 @@ Produce the configuration for the topic: "[REPLACE_WITH_YOUR_TOPIC_HERE]"`}
                                   <div className="text-[9px] font-extrabold tracking-[0.18em] mb-1 uppercase" style={{ color: infographicCustomAccent }}>
                                     {feature.subtitle}
                                   </div>
-                                  <h3 className="text-lg font-extrabold text-white">{feature.title}</h3>
+                                  <h3 className={`text-lg font-extrabold ${infographicTheme.textColor || 'text-white'}`}>{feature.title}</h3>
                                 </div>
                                 <span 
                                   className="text-2.5xl font-mono font-black opacity-40 select-none"
@@ -3315,21 +3522,21 @@ Produce the configuration for the topic: "[REPLACE_WITH_YOUR_TOPIC_HERE]"`}
                               </div>
 
                               {/* Code Block Container */}
-                              <div className="rounded-lg overflow-hidden bg-slate-950/90 border border-slate-850/80 p-3.5 mb-3.5">
-                                <pre className="text-xs font-mono text-slate-300 overflow-x-auto whitespace-pre leading-relaxed select-all">
+                              <div className={`rounded-lg overflow-hidden ${infographicTheme.codeBg || 'bg-slate-950/90'} border ${infographicTheme.codeBorder || 'border-slate-850/80'} p-3.5 mb-3.5`}>
+                                <pre className={`text-xs font-mono ${infographicTheme.codeTextColor || 'text-slate-300'} overflow-x-auto whitespace-pre leading-relaxed select-all`}>
                                   {feature.code}
                                 </pre>
                               </div>
 
                               {/* Scenario Bullets */}
                               <div>
-                                <h4 className="text-[9px] uppercase font-bold tracking-widest text-slate-400 mb-2 flex items-center gap-1.5">
+                                <h4 className={`text-[9px] uppercase font-bold tracking-widest mb-2 flex items-center gap-1.5 ${infographicTheme.subtitleColor || 'text-slate-400'}`}>
                                   <CheckCircle2 className="w-3.5 h-3.5" style={{ color: infographicCustomAccent }} />
                                   Key Use Cases & Scenarios
                                 </h4>
                                 <ul className="space-y-1.5">
                                   {feature.scenarios.map((scenario, sIdx) => (
-                                    <li key={sIdx} className="flex items-start gap-2 text-xs text-slate-400 font-sans">
+                                    <li key={sIdx} className={`flex items-start gap-2 text-xs font-sans ${infographicTheme.subtitleColor || 'text-slate-400'}`}>
                                       <span className="text-[10px] mt-0.5 font-bold px-1 rounded font-mono" style={{ backgroundColor: `${infographicCustomAccent}12`, color: infographicCustomAccent }}>
                                         {sIdx + 1}
                                       </span>
@@ -3343,7 +3550,7 @@ Produce the configuration for the topic: "[REPLACE_WITH_YOUR_TOPIC_HERE]"`}
                         })}
                       </div>
 
-                      <footer className="mt-12 border-t border-slate-900 pt-6 flex items-center justify-between text-[10px] text-slate-500">
+                      <footer className={`mt-12 border-t pt-6 flex items-center justify-between text-[10px] text-slate-500 ${infographicTheme.border || 'border-slate-900'}`}>
                         <div className="flex items-center gap-1.5">
                           <span className="w-2.5 h-2.5 rounded-full bg-slate-850 border border-slate-800 flex items-center justify-center font-bold text-white text-[8px]">★</span>
                           <span>{infographicFooterBrand}</span>
@@ -3376,22 +3583,22 @@ Produce the configuration for the topic: "[REPLACE_WITH_YOUR_TOPIC_HERE]"`}
                             <div className="flex items-center justify-between">
                               <div className="flex items-center gap-2">
                                 <span className="w-2 h-2 rounded-full" style={{ backgroundColor: infographicCustomAccent }} />
-                                <span className="text-[10px] tracking-[0.2em] font-extrabold text-slate-400 uppercase">{infographicCategory}</span>
+                                <span className={`text-[10px] tracking-[0.2em] font-extrabold uppercase ${infographicTheme.subtitleColor || 'text-slate-400'}`}>{infographicCategory}</span>
                               </div>
                               <span className="text-[10px] font-mono text-slate-500">1 of {activeInfographicFeatures.length + 1}</span>
                             </div>
 
                             <div className="my-auto space-y-3">
-                              <h2 className={`${layoutStyles.coverTitle} text-white leading-tight`}>
+                              <h2 className={`${layoutStyles.coverTitle} leading-tight ${infographicTheme.textColor || 'text-white'}`}>
                                 {infographicTitle}
                               </h2>
-                              <p className={`${layoutStyles.coverSubtitle} text-slate-400 max-w-sm`}>
+                              <p className={`${layoutStyles.coverSubtitle} max-w-sm ${infographicTheme.subtitleColor || 'text-slate-400'}`}>
                                 {infographicSubtitle}
                               </p>
                             </div>
 
                             <div className={`flex items-center justify-between text-xs ${layoutStyles.footerSpace}`}>
-                              <span className="text-slate-400 font-semibold flex items-center gap-1">Swipe to start</span>
+                              <span className={`font-semibold flex items-center gap-1 ${infographicTheme.subtitleColor || 'text-slate-400'}`}>Swipe to start</span>
                               <span className="font-extrabold tracking-wider animate-pulse" style={{ color: infographicCustomAccent }}>NEXT SLIDE →</span>
                             </div>
                           </div>
@@ -3420,13 +3627,13 @@ Produce the configuration for the topic: "[REPLACE_WITH_YOUR_TOPIC_HERE]"`}
 
                               <div className={`my-auto ${layoutStyles.bodySpace}`}>
                                 <div className="flex items-center justify-between">
-                                  <h3 className={`${layoutStyles.title} text-white tracking-tight`}>{feature.title}</h3>
+                                  <h3 className={`${layoutStyles.title} tracking-tight ${infographicTheme.textColor || 'text-white'}`}>{feature.title}</h3>
                                   <span className={`${layoutStyles.slideNumber} opacity-35`} style={{ color: infographicCustomAccent }}>0{infographicActiveSlide}</span>
                                 </div>
 
                                 {/* Slide code syntax block */}
-                                <div className={`rounded-lg overflow-hidden bg-slate-950/95 border border-slate-850/80 ${layoutStyles.codeContainer}`}>
-                                  <pre className={`${layoutStyles.codeText} font-mono text-slate-300 overflow-x-auto whitespace-pre leading-relaxed`}>
+                                <div className={`rounded-lg overflow-hidden ${infographicTheme.codeBg || 'bg-slate-950/95'} border ${infographicTheme.codeBorder || 'border-slate-850/80'} ${layoutStyles.codeContainer}`}>
+                                  <pre className={`${layoutStyles.codeText} font-mono ${infographicTheme.codeTextColor || 'text-slate-300'} overflow-x-auto whitespace-pre leading-relaxed`}>
                                     {feature.code}
                                   </pre>
                                 </div>
@@ -3436,7 +3643,7 @@ Produce the configuration for the topic: "[REPLACE_WITH_YOUR_TOPIC_HERE]"`}
                                   <h4 className="text-[9px] font-bold uppercase tracking-widest text-slate-500">Key Scenarios</h4>
                                   <ul className="space-y-1">
                                     {feature.scenarios.map((scenario, sIdx) => (
-                                      <li key={sIdx} className={`flex items-start gap-2 ${layoutStyles.scenarioText} text-slate-400`}>
+                                      <li key={sIdx} className={`flex items-start gap-2 ${layoutStyles.scenarioText} ${infographicTheme.subtitleColor || 'text-slate-400'}`}>
                                         <span className="text-xs font-mono font-bold" style={{ color: infographicCustomAccent }}>•</span>
                                         <span className="font-sans">{scenario}</span>
                                       </li>
@@ -3493,22 +3700,22 @@ Produce the configuration for the topic: "[REPLACE_WITH_YOUR_TOPIC_HERE]"`}
                             <div className="flex items-center justify-between">
                               <div className="flex items-center gap-2">
                                 <span className="w-2 h-2 rounded-full" style={{ backgroundColor: infographicCustomAccent }} />
-                                <span className="text-[10px] tracking-[0.2em] font-extrabold text-slate-400 uppercase">{infographicCategory}</span>
+                                <span className={`text-[10px] tracking-[0.2em] font-extrabold uppercase ${infographicTheme.subtitleColor || 'text-slate-400'}`}>{infographicCategory}</span>
                               </div>
                               <span className="text-[10px] font-mono text-slate-500">1 of {activeInfographicFeatures.length + 1}</span>
                             </div>
 
                             <div className="my-auto space-y-3">
-                              <h2 className={`${layoutStyles.coverTitle} text-white leading-tight`}>
+                              <h2 className={`${layoutStyles.coverTitle} leading-tight ${infographicTheme.textColor || 'text-white'}`}>
                                 {infographicTitle}
                               </h2>
-                              <p className={`${layoutStyles.coverSubtitle} text-slate-400 max-w-sm`}>
+                              <p className={`${layoutStyles.coverSubtitle} max-w-sm ${infographicTheme.subtitleColor || 'text-slate-400'}`}>
                                 {infographicSubtitle}
                               </p>
                             </div>
 
                             <div className={`flex items-center justify-between text-xs ${layoutStyles.footerSpace}`}>
-                              <span className="text-slate-400 font-semibold flex items-center gap-1">Swipe to start</span>
+                              <span className={`font-semibold flex items-center gap-1 ${infographicTheme.subtitleColor || 'text-slate-400'}`}>Swipe to start</span>
                               <span className="font-extrabold tracking-wider" style={{ color: infographicCustomAccent }}>NEXT SLIDE →</span>
                             </div>
                           </div>
@@ -3528,12 +3735,12 @@ Produce the configuration for the topic: "[REPLACE_WITH_YOUR_TOPIC_HERE]"`}
 
                               <div className={`my-auto ${layoutStyles.bodySpace}`}>
                                 <div className="flex items-center justify-between">
-                                  <h3 className={`${layoutStyles.title} text-white tracking-tight`}>{feature.title}</h3>
+                                  <h3 className={`${layoutStyles.title} tracking-tight ${infographicTheme.textColor || 'text-white'}`}>{feature.title}</h3>
                                   <span className={`${layoutStyles.slideNumber} opacity-35`} style={{ color: infographicCustomAccent }}>0{slideIdx}</span>
                                 </div>
 
-                                <div className={`rounded-lg overflow-hidden bg-slate-950/95 border border-slate-850/80 ${layoutStyles.codeContainer}`}>
-                                  <pre className={`${layoutStyles.codeText} font-mono text-slate-300 overflow-x-auto whitespace-pre leading-relaxed`}>
+                                <div className={`rounded-lg overflow-hidden ${infographicTheme.codeBg || 'bg-slate-950/95'} border ${infographicTheme.codeBorder || 'border-slate-850/80'} ${layoutStyles.codeContainer}`}>
+                                  <pre className={`${layoutStyles.codeText} font-mono ${infographicTheme.codeTextColor || 'text-slate-300'} overflow-x-auto whitespace-pre leading-relaxed`}>
                                     {feature.code}
                                   </pre>
                                 </div>
@@ -3542,7 +3749,7 @@ Produce the configuration for the topic: "[REPLACE_WITH_YOUR_TOPIC_HERE]"`}
                                   <h4 className="text-[9px] font-bold uppercase tracking-widest text-slate-500">Key Scenarios</h4>
                                   <ul className="space-y-1">
                                     {feature.scenarios.map((scenario, sIdx) => (
-                                      <li key={sIdx} className={`flex items-start gap-2 ${layoutStyles.scenarioText} text-slate-400 font-sans`}>
+                                      <li key={sIdx} className={`flex items-start gap-2 ${layoutStyles.scenarioText} ${infographicTheme.subtitleColor || 'text-slate-400'} font-sans`}>
                                         <span className="text-xs font-mono font-bold" style={{ color: infographicCustomAccent }}>•</span>
                                         <span className="font-sans">{scenario}</span>
                                       </li>

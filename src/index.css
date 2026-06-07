@@ -49,3 +49,64 @@ body {
   transform: scale(0.95) translateY(-10px);
   transition: opacity 300ms, transform 300ms;
 }
+
+/* Light Theme Code Block Prism Syntax Overrides */
+.light-code-highlight .token.comment,
+.light-code-highlight .token.prolog,
+.light-code-highlight .token.doctype,
+.light-code-highlight .token.cdata {
+  color: #64748b; /* slate-500 */
+  font-style: italic;
+}
+
+.light-code-highlight .token.punctuation {
+  color: #475569; /* slate-600 */
+}
+
+.light-code-highlight .token.tag,
+.light-code-highlight .token.attr-name,
+.light-code-highlight .token.namespace,
+.light-code-highlight .token.deleted {
+  color: #991b1b; /* red-800 */
+}
+
+.light-code-highlight .token.function-name {
+  color: #1e3a8a; /* blue-900 */
+}
+
+.light-code-highlight .token.boolean,
+.light-code-highlight .token.number,
+.light-code-highlight .token.function {
+  color: #b45309; /* amber-700 */
+}
+
+.light-code-highlight .token.property,
+.light-code-highlight .token.class-name,
+.light-code-highlight .token.constant,
+.light-code-highlight .token.symbol {
+  color: #0369a1; /* sky-700 */
+}
+
+.light-code-highlight .token.selector,
+.light-code-highlight .token.important,
+.light-code-highlight .token.atrule,
+.light-code-highlight .token.keyword,
+.light-code-highlight .token.builtin {
+  color: #701a75; /* fuchsia-800 */
+  font-weight: bold;
+}
+
+.light-code-highlight .token.string,
+.light-code-highlight .token.char,
+.light-code-highlight .token.attr-value,
+.light-code-highlight .token.regex,
+.light-code-highlight .token.variable {
+  color: #166534; /* green-800 */
+}
+
+.light-code-highlight .token.operator,
+.light-code-highlight .token.entity,
+.light-code-highlight .token.url {
+  color: #0f766e; /* teal-700 */
+}
+
